@@ -1,0 +1,242 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    width: 100vw;
+    padding: .55rem;
+    background: rgb(13, 27, 42);
+}
+.wrapper{
+    height: fit-content;
+    width: 100%;
+    aspect-ratio: 1/1;
+    background: rgb(9, 18, 2);
+    display: grid;
+    gap: 1rem;
+    place-items: center;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0 0 0 / 0.1);
+    box-sizing: border-box;
+    padding: 1rem;
+}
+.top_section{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    place-items: center;
+    background: rgb(11, 25, 40);
+    box-shadow: 8px 8px 20px rgb(0 0 0 / 0.4), 8px -8px 20px rgb(255 255 255 / 0.034);
+    border-radius: inherit;
+    height: 100%;
+    width: 100%;
+    padding: 1rem;
+    gap: 1rem;
+}
+.profile_picture{
+    position: relative;
+    grid-column: 1 / 4;
+    grid-row: 1 / 6;
+    height: 30rem;
+    width: 30rem;
+    border-radius: 50%;
+    object-fit: contain;
+    background: rgb(25, 38, 52);
+    box-shadow: 8px 8px 20px rgb(0 0 0 / 0.4), -8px -8px 20px rgb(255 255 255  / 0.03);
+    place-content: center;
+    text-align: center;
+    
+}
+.profile_picture img{
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.about_self{
+    display: grid;
+    gap: 2rem;
+    grid-column: 4 / -1;
+    grid-row: -5 / -1;
+    height: 100%;
+    width: 90%;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    background: transparent;
+}
+.about_self h2, .hobbies h2, .aspiration h2{
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: rgb(0, 255, 255);
+}
+.about_self h2{
+    padding-left: 1rem;
+}
+.about_self p{
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: rgb(255 255 255);
+    letter-spacing: 0.5px;
+    word-spacing: 1px;
+    text-align: left;
+    padding: 1rem;
+}
+.bottom_section{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    place-items: center;
+    background: rgb(13, 27, 42);
+    box-shadow: 8px 8px 20px rgb(0 0 0 / 0.4), -8px -8px 20px rgb(255 255 255  / 0.03);
+    border-radius: inherit;
+    height: 100%;
+    width: 100%;
+    padding: 1rem;
+    gap: 1rem;
+}
+.hobbies{
+    grid-column: 1 / -4;
+    grid-row: 1 / 4;
+    height: 90%;
+    width: 90%;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 1rem;
+    background: rgb(25, 38, 52);
+    box-shadow: 8px 8px 20px rgb(0 0 0 / 0.4), -8px -8px 20px rgb(255 255 255 / 0.034);
+    color: white;
+    border-radius: inherit;
+}
+
+.aspiration{
+    grid-column: 4 / -1;
+    grid-row: 1 / 4;
+    height: 90%;
+    width: 90%;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 1rem;
+    background: rgb(25, 38, 52);
+    box-shadow: 8px 8px 20px rgb(0 0 0 / 0.4), -8px -8px 20px rgb(255 255 255 / 0.034);
+    color: white;
+    border-radius: inherit;
+}
+
+.hobbies p, .aspiration p{
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: rgb(255 255 255);
+    letter-spacing: 0.5px;
+    word-spacing: 1px;
+    text-align: center;
+    height: 6rem;
+    padding: 1.5rem;
+}
+
+@media (max-width:1234px){
+    .profile_picture{
+        height: 25rem;
+        width: 25rem;
+    }   
+    .about_self h2, .hobbies h2, .aspiration h2{
+        margin-bottom: 1rem;
+    }
+    
+}
+@media (max-width:1024px){
+    .profile_picture{
+        height: 20rem;
+        width: 20rem;
+    }   
+    .about_self h2, .hobbies h2, .aspiration h2{
+        margin-bottom: .8rem;
+    }
+    .about_self p, .hobbies p, .aspiration p{
+        font-size: 1rem;
+    }
+    
+}
+@media (max-width:900px){
+    .profile_picture{
+        height: 18rem;
+        width: 18rem;
+    }   
+    .about_self h2, .hobbies h2, .aspiration h2{
+        font-size: 1.2rem;
+        margin-bottom: .5rem;
+    }
+    .about_self p, .hobbies p, .aspiration p{
+        font-size: .8rem;
+    }
+    
+}
+
+@media (max-width: 768px){
+    
+    .top_section{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        gap: 0;
+    }
+    .profile_picture{
+        grid-column: 2 / 4;
+        grid-row: 1 / 3;
+        height: 20rem;
+        width: 20rem;
+    }
+    .about_self{
+        grid-column: 1 / -1;
+        grid-row: 3 / 4;
+        height: fit-content;
+        width: 100%;
+        padding: 0;
+    }
+    .about_self h2{
+        display: none;
+    }
+    .about_self p{
+        text-align: center;
+    }
+    .bottom_section{
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(2, 1fr);
+    }
+    .hobbies, .aspiration{
+        grid-column: 1 / -1;
+        grid-row: auto;
+        height: fit-content;
+        width: 100%;
+    }
+    
+}
+@media (max-width:600px){
+    .profile_picture{
+        height: 16rem;
+        width: 16rem;
+    } 
+    
+}
+@media (max-width:425px){
+    body{
+        padding: 0rem;
+        background: rgb(13, 27, 42);
+    }
+    .wrapper{
+        padding: .5rem;
+    }
+    .profile_picture{
+        height: 15rem;
+        width: 15rem;
+    } 
+}
