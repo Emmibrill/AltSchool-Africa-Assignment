@@ -239,4 +239,13 @@ body{
         height: 15rem;
         width: 15rem;
     } 
+
+    .hobbies h2, .aspiration h2{
+        font-size: 1rem;
+        margin-bottom: .5rem;
+    }
+    .hobbies p, .aspiration p{
+        height: 7rem;
+    }
+
 }
