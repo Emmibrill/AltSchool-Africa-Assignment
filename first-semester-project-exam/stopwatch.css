@@ -25,17 +25,18 @@
 
 body{
     width: 100dvw;
-    height: 100dvh;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-      background: var(--main-bg-col);
+    background: var(--main-bg-col);
+    padding: 1rem;
 }
 main{
     display: grid;
     place-items: center;
-    background: var(--main-bg-col);
-     background: var(--time-display-bg-col);
+    /* background: var(--main-bg-col); */
+    background: var(--time-display-bg-col);
     padding: 1.5rem;
     color: var(--body-text-col);
     text-align: center;
@@ -52,6 +53,7 @@ h1{
 }
 
 .top_container{
+    box-sizing: border-box;
     display: grid;
     place-items: center;
     width: 100%;
@@ -73,24 +75,20 @@ h1{
     align-items: center;
     justify-content: center;
     margin: 1rem 0;
-    border: 1px solid none;
     border-radius: 1rem;
 }
 
 #time{
     display: inline-block;
-    font-size: 3rem;
+    font-family: 'Digital7', monospace;
+    font-size: 4rem;
     font-weight: bold;
     letter-spacing: .5rem;
-    font-feature-settings: "tnum";
-    font-variant-numeric: tabular-nums;
     color: var(--green-col);
     color: var(--body-text-col);
     /* color: rgb(203, 1, 0); */
     /* color: rgb(195, 144, 38); */
     /* text-shadow: var(--time-text-shadow); */
-    font-family: 'Digital7', monospace;
-    font-size: 4rem;
 }
 
 #stopwatch_nav{
@@ -117,38 +115,12 @@ button{
     outline: none;
     transition: all 0.5s ease-in-out;
 }
-button:active, button:focus{
-    border: none;
-    outline: none;
-}
 
 button:hover {
     transform: translateY(1px);
     transform: scale(0.96);
     background:  var( --btn-hover-bg);
     box-shadow:  var( --btn-hover-box-shadow);
-}
-
-
-#laps{
-    height: 100%;
-    width: 100%;
-    background: transparent;
-    color: var(--laps-text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column-reverse;
-    border-radius: inherit;
-    cursor: grab;
-}
-#laps>*{
-    height: 100%;
-    width: 100%;
-    padding: .1rem;
-    letter-spacing: 3px;
-    background: transparent;
-    color: var(--laps-text);
 }
 
 #laps_section{
@@ -169,6 +141,36 @@ button:hover {
 #laps_section::-webkit-scrollbar{
     display: none;
 }
+
+#laps{
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    color: var(--laps-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column-reverse;
+    border-radius: inherit;
+    cursor: grab;
+    list-style-type: none;
+    counter-reset: lapCount;
+}
+#laps>*{
+    height: 100%;
+    width: 100%;
+    padding: .1rem;
+    letter-spacing: 3px;
+    background: transparent;
+    color: var(--laps-text);
+}
+#laps li{
+    counter-increment: lapCount;
+}
+#laps li::before{
+    content: "#" counter(lapCount) " ";
+}
+
 .Brill{
     display: inline-flex;
     align-items: center;
@@ -180,3 +182,120 @@ button:hover {
     margin-top: .6rem;
 }
 
+@media (max-width:768px) {
+    
+    h1{
+        padding: .4rem;
+        font-size: 1.7rem;
+    }
+    #stopwatch_display{
+        height: 5rem;
+    }
+
+    #time{
+        font-size: 3.6rem;
+        letter-spacing: .4rem;
+    }
+
+    #stopwatch_nav{
+        height: 5rem;
+    }
+    button{
+        width: 5rem;
+        height: 2.5rem;
+        font-size: 1.1rem;
+    }
+
+    #laps_section{
+    height: 10rem;
+    }
+
+    #laps>*{
+        font-size: .9rem;
+        letter-spacing: 2.5px;
+    }
+
+    .Brill{
+        font-size: .6rem;
+        font-weight: 600;
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width:573px) {
+    
+    h1{
+        font-size: 1.5rem;
+    }
+    #stopwatch_display{
+        height: 4rem;
+    }
+
+    #time{
+        font-size: 3rem;
+    }
+
+    #stopwatch_nav{
+        height: 4rem;
+    }
+    button{
+        height: 2.2rem;
+        font-size: 1rem;
+    }
+
+    #laps>*{
+        font-size: .85rem;
+    }
+}
+
+@media (max-width:425px) {
+
+    h1{
+        font-size: 1.2rem;
+    }
+
+    .top_container{
+        width: 100%;
+    }
+    #stopwatch_display{
+        height: 4rem;
+        padding: .5rem 0.2rem;
+    }
+
+    #time{
+        font-size: 2.5rem;
+        padding: .2rem;
+    }
+
+    #stopwatch_nav{
+        height: 4rem;
+        gap: .5rem;
+    }
+    button{
+        width: 4rem;
+        height: 2rem;
+        font-size: .8rem;
+    }
+
+    #laps>*{
+        font-size: .8rem;
+    }
+}
+
+@media (max-width:354px) {
+    main{
+        padding: 1rem;
+    }
+
+    .top_container{
+        padding: 0 .3rem;
+    }
+    #time{
+        font-size: 2rem;
+    }
+
+    button{
+        width: 3.5rem;
+        font-size: .7rem;
+    }
+}
