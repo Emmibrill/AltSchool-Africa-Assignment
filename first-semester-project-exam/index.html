@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch App</title>
+    <link rel="stylesheet" href="stopwatch.css">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="stopwatch.js" defer></script>
+</head>
+<body>
+    <main>
+
+        <!--Title of the App-->
+        <header>
+            <h1>Stopwatch</h1>
+        </header>
+
+        <div class="top_container"> 
+
+            <!--Display section of the stopwatch App that shows the timer in hours:minutes:seconds:miliseconds-->
+            <section id="stopwatch_display" aria-label="Stopwatch Display">
+                <p id="time" aria-label="Stopwatch Timer">
+                    00:00:00:000
+                </p>
+            </section>
+
+        </div>
+
+
+        <!--Stopwatch navigation controls-->
+        <nav id="stopwatch_nav" aria-label="Stopwatch Controls">
+            <button id="reset"><i class="fa-solid fa-rotate-left"></i></button>
+            <button id="start"><i class="fa-solid fa-play"></i></button>
+            <button id="pause"><i class="fa-solid fa-pause"></i></button>
+            <button id="lap"><i class="fa-solid fa-stopwatch"></i></button>
+        </nav>
+    
+        <!--laps section-->
+        <section id="laps_section" aria-label="Stopwatch Laps Display">
+            <ol id="laps"></ol>
+        </section>
+
+        <p class="Brill">Designed and developed by Emmibrill udo</p class="Brill">
+    </main>
+    
+</body>
+</html>

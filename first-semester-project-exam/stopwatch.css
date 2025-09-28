@@ -1,0 +1,182 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    --green-col: rgb(0, 255, 102);
+    --btn-bg-col: linear-gradient(135deg, rgb(57, 255, 20), rgb(22, 81, 50));
+    --btn-txt-col: rgb(255, 255, 255);
+    --btn-hover-bg: linear-gradient(135deg, rgb(57, 255, 20), rgb(16, 99, 37));
+    --btn-hover-box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.4), inset -4px -4px 8px rgba(255, 255, 255, 0.03);
+    --time-display-bg-col: rgb(13, 13, 22);
+    --display-text: rgb(0, 247, 255);
+    --laps-section-bg: rgba(0, 255, 102, .1);
+    --laps-text: rgb(207, 216, 220);
+    --main-bg-col: rgb(13, 27, 42);
+    --time-text-shadow: 0 0 2px var(--green-col), 0 0 5px var(--green-col), 0 0 6.5px var(--green-col);
+    --time-display-box-shadow: 8px 8px 40px rgba(0 0 0 / .4), -8px -8px 40px rgba(255 255 255 / .03);
+    --body-text-col: rgb(255 255 255);
+    --shadow-light: -8px -8px 20px rgba(255, 255, 255, 0.03);
+    --shadow-dark: 8px 8px 20px rgba(0, 0, 0, 0.4);
+}
+@font-face {
+  font-family: 'Digital7';
+  src: url('assets/digital_7/digital.ttf') format('truetype');
+}
+
+body{
+    width: 100dvw;
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+      background: var(--main-bg-col);
+}
+main{
+    display: grid;
+    place-items: center;
+    background: var(--main-bg-col);
+     background: var(--time-display-bg-col);
+    padding: 1.5rem;
+    color: var(--body-text-col);
+    text-align: center;
+    border-radius: 1rem;
+    box-shadow: 8px 8px 20px rgba(0 0 0 / .4), -8px -8px 20px rgba(255 255 255 / .03);
+}
+h1{
+    padding: .4rem;
+    font-size: 2rem;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bolder;
+    color: var(--body-text-col);
+    letter-spacing: .1rem;
+}
+
+.top_container{
+    display: grid;
+    place-items: center;
+    width: 100%;
+    text-align: center;
+    background: var(--time-display-bg-col);
+    box-shadow: var(--time-display-box-shadow);
+    border: 3px solid var(--green-col);
+    border-radius: 1rem;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+
+#stopwatch_display{
+    height: 6rem;
+    display: flex;
+    background: var(--display-bg-col);
+    padding: 1rem;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0;
+    border: 1px solid none;
+    border-radius: 1rem;
+}
+
+#time{
+    display: inline-block;
+    font-size: 3rem;
+    font-weight: bold;
+    letter-spacing: .5rem;
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+    color: var(--green-col);
+    color: var(--body-text-col);
+    /* color: rgb(203, 1, 0); */
+    /* color: rgb(195, 144, 38); */
+    /* text-shadow: var(--time-text-shadow); */
+    font-family: 'Digital7', monospace;
+    font-size: 4rem;
+}
+
+#stopwatch_nav{
+    height: 5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    padding: .5rem;
+}
+button{
+    background: var(--btn-bg-col);
+    width: 6rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem; 
+    box-shadow: var(--shadow-dark), var(--shadow-light);
+    border: none;
+    color: var(--body-text-col);
+    font-size: 1.5rem;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.5s ease-in-out;
+}
+button:active, button:focus{
+    border: none;
+    outline: none;
+}
+
+button:hover {
+    transform: translateY(1px);
+    transform: scale(0.96);
+    background:  var( --btn-hover-bg);
+    box-shadow:  var( --btn-hover-box-shadow);
+}
+
+
+#laps{
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    color: var(--laps-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column-reverse;
+    border-radius: inherit;
+    cursor: grab;
+}
+#laps>*{
+    height: 100%;
+    width: 100%;
+    padding: .1rem;
+    letter-spacing: 3px;
+    background: transparent;
+    color: var(--laps-text);
+}
+
+#laps_section{
+   height: 10rem;
+   width: 100%;
+   background:  var(--laps-section-bg);
+   display: grid;
+   place-content: center;
+   border: none;
+   border-radius: 1rem;
+   margin: 2rem 0 0;
+   overflow-y: auto;
+   scroll-behavior: smooth;
+   scrollbar-width: none;
+   font-family: 'Share Tech Mono', monospace;
+   font-family: 'Digital7', monospace;
+}
+#laps_section::-webkit-scrollbar{
+    display: none;
+}
+.Brill{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .8rem;
+    font-weight: 400;
+    letter-spacing: .1rem;
+    font-family: 'Digital7', monospace;
+    margin-top: .6rem;
+}
+
