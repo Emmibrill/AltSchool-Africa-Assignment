@@ -12,10 +12,19 @@ let laps = []
 
 //format time gotten in ms to hours : minutes : seconds : miliseconds 
 const formatTime = (dateTimeGotten) => {
+    //convert miliseconds to seconds
     const totalSecondsGotten = Math.floor(dateTimeGotten / 1000);
+
+    //convert the seconds to hours
     const hours = String(Math.floor(totalSecondsGotten / 3600)).padStart(2, "0");
+
+    //convert seconds to minutes 
     const minutes = String(Math.floor((totalSecondsGotten % 3600)/60)).padStart(2, "0");
+
+    //get seconds left after: hour(s) and minute(s)
     const seconds = String(Math.floor(totalSecondsGotten % 60)).padStart(2, "0");
+
+    //get miliseconds left after: hour(s) and minute(s), second(s)
     const miliseconds = String(Math.floor(dateTimeGotten % 1000)).padStart(3, "0");
     return `${hours}:${minutes}:${seconds}:${miliseconds}`;
 }
@@ -30,13 +39,12 @@ const startStopWatch = () => {
     //avoid having the time go faster than expected
     if(!timeInterval){
         startTime = Date.now() - timeElasped;
-        // lapTime = Date.now() - timeElasped
     }
 
-    //get time for every 100ms to allow the milisecond change appropraitely
+    //get time for every interval of 100ms to allow the milisecond change appropraitely
     timeInterval = setInterval(() => {
-        const now = Date.now();
-        timeElasped = now - startTime;
+        const timeAtStop = Date.now();
+        timeElasped = timeAtStop - startTime;
         displayTime();
     }, 100);
 
@@ -91,15 +99,3 @@ startButton.addEventListener('click', startStopWatch);
 pauseStopButton.addEventListener('click', stopWatch);
 resetButton.addEventListener('click', resetStopWatch);
 lapButton.addEventListener('click', getlaps);
-
-
-//stop and pause the stop watch and clear the timeinterval ID from the variable "timeinterval" 
-// to avoid multiple instances
-// const stopWatch = () => {
-//     if(timeInterval){
-//         clearInterval(timeInterval)
-//         timeInterval = null
-//     }
-// }
-
-// startStopWatch()
