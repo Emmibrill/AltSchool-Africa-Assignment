@@ -130,42 +130,40 @@ button:hover {
 }
 
 #laps_section{
-   height: 10rem;
-   width: 100%;
-   background:  var(--laps-section-bg);
-   display: grid;
-   place-content: center;
-   border: none;
-   border-radius: 1rem;
-   margin: 2rem 0 0;
-   overflow-y: auto;
-   scroll-behavior: smooth;
-   scrollbar-width: none;
-   font-family: 'Share Tech Mono', monospace;
-   font-family: 'Digital7', monospace;
+    height: 10rem;
+    width: 100%;
+    background:  var(--laps-section-bg);
+    border: none;
+    border-radius: 1rem;
+    padding: .5rem 0;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    font-family: 'Share Tech Mono', monospace;
+    font-family: 'Digital7', monospace;
 }
 #laps_section::-webkit-scrollbar{
     display: none;
 }
 
 #laps{
-    height: 100%;
+    height: auto;
     width: 100%;
     background: transparent;
     color: var(--laps-text);
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: baseline;
     flex-direction: column-reverse;
     border-radius: inherit;
     cursor: grab;
     list-style-type: none;
     counter-reset: lapCount;
+    padding: 1rem;
 }
 #laps>*{
-    height: 100%;
     width: 100%;
-    padding: .1rem;
+    padding: .2rem;
     letter-spacing: 3px;
     background: transparent;
     color: var(--laps-text);
@@ -174,7 +172,7 @@ button:hover {
     counter-increment: lapCount;
 }
 #laps li::before{
-    content: "#" counter(lapCount) " ";
+    content: "#" counter(lapCount, decimal-leading-zero) " ";
 }
 
 .Brill{
