@@ -17,6 +17,8 @@
     --body-text-col: rgb(255 255 255);
     --shadow-light: -8px -8px 20px rgba(255, 255, 255, 0.03);
     --shadow-dark: 8px 8px 20px rgba(0, 0, 0, 0.4);
+
+    -webkit-tap-highlight-color: rgb(255, 255, 255, 0);
 }
 @font-face {
   font-family: 'Digital7';
@@ -114,6 +116,10 @@ button{
     cursor: pointer;
     outline: none;
     transition: all 0.5s ease-in-out;
+}
+
+button:focus, button:active{
+    outline: none;
 }
 
 button:hover {
@@ -249,6 +255,9 @@ button:hover {
 }
 
 @media (max-width:425px) {
+    body{
+    height: 100dvh;
+}
 
     h1{
         font-size: 1.2rem;
