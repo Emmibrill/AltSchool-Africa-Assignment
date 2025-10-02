@@ -4,6 +4,8 @@ const pauseStopButton = document.querySelector("#pause");
 const resetButton = document.querySelector("#reset");
 const lapButton = document.querySelector("#lap");
 const lapDisplay = document.querySelector("#laps");
+const themeToggler = document.querySelector(".theme_toggler");
+
 let startTime = 0;
 let timeElasped = 0;
 let timeInterval = null;
@@ -99,3 +101,44 @@ startButton.addEventListener('click', startStopWatch);
 pauseStopButton.addEventListener('click', stopWatch);
 resetButton.addEventListener('click', resetStopWatch);
 lapButton.addEventListener('click', getlaps);
+
+const currentTheme = themeToggler.getAttribute("data-theme");
+console.log(currentTheme);
+
+const toggleTheme = () => {
+
+    if(!themeToggler) return;
+    
+    themeToggler.addEventListener("click", () => {
+        
+        //if the current theme is light, switch to dark and vice versa
+        if(document.documentElement.setAttribute("data-theme", "dark")){
+            themeToggler.setAttribute("data-theme", "dark");
+            themeToggler.firstChild.classList.replace("fa-sun", "fa-moon");
+            document.documentElement.setAttribute("data-theme", "dark");
+        }
+        if(themeToggler.firstChild.classList.contains("fa-moon")){
+            themeToggler.setAttribute("data-theme", "light");
+            themeToggler.firstChild.classList.replace("fa-moon", "fa-sun");
+            document.documentElement.setAttribute("data-theme", "light");
+            // console.log(document.documentElement.getAttribute("data-theme"));
+        }else{
+            themeToggler.setAttribute("data-theme", "dark");
+            themeToggler.firstChild.classList.replace("fa-sun", "fa-moon");
+            document.documentElement.setAttribute("data-theme", "dark");
+            // console.log(document.documentElement.getAttribute("data-theme"));
+        }
+       
+        themeToggler.classList.toggle("toggle");
+        // function toggleIcon() {
+        //    if(themeToggler.firstChild.classList.contains("fa-moon")){
+        //         themeToggler.firstChild.classList.replace("fa-moon", "fa-sun");
+        //     }else{
+        //         themeToggler.firstChild.classList.replace("fa-sun", "fa-moon");
+        //     }
+          
+        // }   
+        //  toggleIcon();
+    })
+}
+toggleTheme();
