@@ -2,23 +2,6 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    /* --green-col: rgb(0, 255, 102);
-    --btn-bg-col: linear-gradient(135deg, rgb(57, 255, 20), rgb(22, 81, 50));
-    --btn-txt-col: rgb(255, 255, 255);
-    --btn-hover-bg: linear-gradient(135deg, rgb(57, 255, 20), rgb(16, 99, 37));
-    --btn-hover-box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.4), inset -4px -4px 8px rgba(255, 255, 255, 0.03);
-    --time-display-bg-col: rgb(13, 13, 22);
-    --display-text: rgb(0, 247, 255);
-    --laps-section-bg: rgba(0, 255, 102, .1);
-    --laps-text: rgb(207, 216, 220);
-    --main-bg-col: rgb(13, 27, 42);
-    --time-text-shadow: 0 0 2px var(--green-col), 0 0 5px var(--green-col), 0 0 6.5px var(--green-col);
-    --time-display-box-shadow: 8px 8px 40px rgba(0 0 0 / .4), -8px -8px 40px rgba(255 255 255 / .03);
-    --body-text-col: rgb(255 255 255);
-    --shadow-light: -8px -8px 20px rgba(255, 255, 255, 0.03);
-    --shadow-dark: 8px 8px 20px rgba(0, 0, 0, 0.4);
-
-    -webkit-tap-highlight-color: rgb(255, 255, 255, 0); */
 }
 :root{
     --green-col: rgb(0, 255, 102);
@@ -37,6 +20,7 @@
     --shadow-light: -8px -8px 20px rgba(255, 255, 255, 0.03);
     --shadow-dark: 8px 8px 20px rgba(0, 0, 0, 0.4);
     --theme-toggler-icon: rgb(255, 255, 255);
+    --theme-toggler-inner-bg: rgba(13, 13, 22, .7);
 
     -webkit-tap-highlight-color: rgb(255, 255, 255, 0);
 }
@@ -57,6 +41,7 @@
     --shadow-light: -8px -8px 20px rgba(255, 255, 255, 0.03);
     --shadow-dark: 8px 8px 20px rgba(0, 0, 0, 0.4);
     --theme-toggler-icon: rgb(255, 255, 255);
+    --theme-toggler-inner-bg: rgba(13, 13, 22, .7);
 
     -webkit-tap-highlight-color: rgb(255, 255, 255, 0);
 }
@@ -95,19 +80,18 @@
   --main-bg-col: #f9fbfd; 
   --time-display-bg-col: #ffffff; 
   --laps-section-bg: rgba(0, 150, 90, 0.06); 
+  --theme-toggler-inner-bg: rgba(255, 255, 255, .5);
 
   --body-text-col: #2d2d2d; 
   --display-text: #0a4d68;  
   --laps-text: #4f5b62; 
 
-  --shadow-light: -6px -6px 14px rgba(255, 255, 255, 0.9);
-  --shadow-dark: 6px 6px 14px rgba(0, 0, 0, 0.08);
+  --shadow-light:  inset -8px -8px 20px rgba(255, 255, 255, 0.03);
+  --shadow-dark: inset 8px 8px 20px rgba(0, 0, 0, 0.4);
   --time-display-box-shadow: 0 4px 20px rgba(0 0 0 / 0.08);
 
   --time-text-shadow: 0 0 2px rgba(0, 200, 140, 0.5), 0 0 6px rgba(0, 200, 140, 0.3), 0 0 10px rgba(0, 200, 140, 0.2);
-
   --theme-toggler-icon: rgb(0, 150, 90);
-
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);  
 }
 
@@ -129,7 +113,7 @@ body{
 main{
     position: relative;
     display: grid;
-    place-items: center;
+    place-items: center;    
     /* background: var(--main-bg-col); */
     background: var(--time-display-bg-col);
     padding: 1.5rem;
@@ -137,6 +121,7 @@ main{
     text-align: center;
     border-radius: 1rem;
     box-shadow: 8px 8px 20px rgba(0 0 0 / .4), -8px -8px 20px rgba(255 255 255 / .03);
+    box-shadow: var(--shadow-dark), var(--shadow-light);
     transition: all .8s ease-in-out;
 }
 .theme_toggler_container{
@@ -151,13 +136,22 @@ main{
     border-radius: 1rem;
     background: var(--green-col);
     padding: 1rem .1rem;
-    
+}
+
+.theme_toggler_container::before{
+    position: absolute;
+    content: "";
+    z-index: 1;
+    width: 96%;
+    height: 93%;
+    border-radius: inherit;
+    background: var(--theme-toggler-inner-bg);
 }
 .theme_toggler{
     position: absolute;
-    width: 1.8rem;
-    height: 1.8rem;
-    padding: .3rem;
+    width: 1.7rem;
+    height: 1.7rem;
+   
     display: flex;
     align-items: center;
     justify-content: center;
@@ -167,14 +161,16 @@ main{
     cursor: pointer;
     transition: all .8s ease;
     transform: translateX(0rem);
+    z-index: 1;
 }
 
 .theme_toggler i{
+    font-size: .9rem;
     color: var(--theme-toggler-icon);
 }
 
 .toggle{
-    transform: translateX(-3rem);
+    transform: translateX(-2.85rem);
 }
 
 h1{
@@ -200,7 +196,6 @@ h1{
     margin: 1rem 0;
     transition: all .8s ease-in-out;
 }
-
 
 #stopwatch_display{
     height: 6rem;
@@ -277,6 +272,7 @@ button:hover {
     font-family: 'Digital7', monospace;
     transition: all .8s ease-in-out;
 }
+
 #laps_section::-webkit-scrollbar{
     display: none;
 }
@@ -296,6 +292,7 @@ button:hover {
     counter-reset: lapCount;
     padding: 1rem;
 }
+
 #laps>*{
     width: 100%;
     padding: .2rem;
@@ -304,9 +301,11 @@ button:hover {
     color: var(--laps-text);
     font-weight: 600;
 }
+
 #laps li{
     counter-increment: lapCount;
 }
+
 #laps li::before{
     content: "#" counter(lapCount, decimal-leading-zero) " ";
     font-weight: 600;
@@ -379,6 +378,7 @@ button:hover {
     #stopwatch_nav{
         height: 4rem;
     }
+
     button{
         height: 2.2rem;
         font-size: 1rem;
@@ -391,22 +391,32 @@ button:hover {
 
 @media (max-width:475px) {
     body{
-    height: 100dvh;
+        height: 100dvh;
     }
 
    .theme_toggler_container{
-    width: 3.2rem;
-    height: 1.5rem;
-    top: 2rem;
-    right: 1.5rem;
-    padding: .5rem .1rem;
-    
+        width: 3.2rem;
+        height: 1.5rem;
+        top: 2rem;
+        right: 1.5rem;
+        padding: .5rem .1rem;
     }
+
+    .theme_toggler_container::before{
+        width: 94%;
+        height: 93%;
+        border-radius: inherit;
+    }
+
     .theme_toggler{
         position: absolute;
-        width: 1.3rem;
-        height: 1.3rem;
+        width: 1.2rem;
+        height: 1.2rem;
         padding: .2rem;
+        font-size: .7rem;
+    }
+
+    .theme_toggler i{
         font-size: .8rem;
     }
 
@@ -435,6 +445,7 @@ button:hover {
         height: 4rem;
         gap: .5rem;
     }
+
     button{
         width: 4rem;
         height: 2rem;
@@ -447,32 +458,40 @@ button:hover {
 }
 
 @media (max-width:354px) {
+
     main{
         padding: 1rem;
     }
 
     .theme_toggler_container{
-        height: 1.2rem;
+        height: 1.1rem;
         width: 2.8rem;
         top: 1.5rem;
         right: 1.2rem;
-        padding: .55rem .1rem;
-    }
-    .theme_toggler{
-        position: absolute;
-        width: 1rem;
-        height: 1rem;
-        padding: .15rem;
-        font-size: .6rem;
     }
 
-     .toggle{
+    .theme_toggler_container::before{
+        width: 93%;
+        height: 91%;
+        border-radius: inherit;
+    }
+
+    .theme_toggler{
+        position: absolute;
+        width: .9rem;
+        height: .9rem;
+        padding: .15rem;
+        font-size: .5rem;
+    }
+
+    .toggle{
         transform: translateX(-1.5rem);
     }
 
     .top_container{
         padding: 0 .3rem;
     }
+    
     #time{
         font-size: 2rem;
     }
