@@ -389,7 +389,7 @@ button:hover {
     }
 }
 
-@media (max-width:560px) {
+@media (max-width:475px) {
     body{
         height: 100dvh;
     }
@@ -468,10 +468,6 @@ button:hover {
         width: 2.8rem;
         top: 1.5rem;
         right: 1.2rem;
-    }
-
-     .theme_toggler i{
-        font-size: .5rem;
     }
 
     .theme_toggler_container::before{
