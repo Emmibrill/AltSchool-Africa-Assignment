@@ -389,7 +389,7 @@ button:hover {
     }
 }
 
-@media (max-width:540px) {
+@media (max-width:560px) {
     body{
         height: 100dvh;
     }
@@ -457,7 +457,7 @@ button:hover {
     }
 }
 
-@media (max-width:416px) {
+@media (max-width:354px) {
 
     main{
         padding: 1rem;
@@ -469,8 +469,8 @@ button:hover {
         top: 1.5rem;
         right: 1.2rem;
     }
-    
-    .theme_toggler i{
+
+     .theme_toggler i{
         font-size: .5rem;
     }
 
