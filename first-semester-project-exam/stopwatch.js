@@ -10,7 +10,6 @@ let startTime = 0;
 let timeElasped = 0;
 let timeInterval = null;
 let lapTime = 0;
-let laps = []
 
 //format time gotten in ms to hours : minutes : seconds : miliseconds 
 const formatTime = (dateTimeGotten) => {
@@ -92,7 +91,7 @@ const getlaps = () => {
         const eachLaps = document.createElement("li");
         eachLaps.innerHTML = formatTime(lapTime);
         lapDisplay.append(eachLaps);
-        console.log(eachLaps);
+        //console.log(eachLaps);
     }
     
 }
