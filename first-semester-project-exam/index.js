@@ -26,7 +26,7 @@ const formatTime = (dateTimeGotten) => {
     const seconds = String(Math.floor(totalSecondsGotten % 60)).padStart(2, "0");
 
     //get miliseconds left after: hour(s) and minute(s), second(s)
-    const miliseconds = String(Math.floor((dateTimeGotten % 1000)/ 10)).padStart(2, "0");
+    const miliseconds = String(Math.floor(dateTimeGotten % 1000)).padStart(3, "0");
     return `${hours}:${minutes}:${seconds}:${miliseconds}`;
 }
 
@@ -53,7 +53,7 @@ const startStopWatch = () => {
     pauseStopButton.disabled = false
 }
 
-const stopStopWatch = () => {
+const stopWatch = () => {
     //stop and pause the stop watch and clear the timeinterval ID from the variable "timeinterval" 
     // to avoid multiple instances
     if(timeInterval){
@@ -74,7 +74,7 @@ const resetStopWatch = () => {
     clearInterval(timeInterval);
     timeInterval = null;
     timeElapsed = 0;
-    display.innerHTML = "00:00:00:00"
+    display.innerHTML = "00:00:00:000"
     lapDisplay.textContent = "";
     resetButton.disabled = false;
 
@@ -87,32 +87,29 @@ const resetStopWatch = () => {
 const getlaps = () => {
     
     if(timeInterval){
-        if(lapDisplay.children.length > 99) return;
         lapTime = timeElapsed;
         const eachLaps = document.createElement("li");
         eachLaps.textContent = formatTime(lapTime);
         lapDisplay.append(eachLaps);
         //console.log(eachLaps);
-        // console.log(lapDisplay.children)
     }
     
 }
 
 startButton.addEventListener('click', startStopWatch);
-pauseStopButton.addEventListener('click', stopStopWatch);
+pauseStopButton.addEventListener('click', stopWatch);
 resetButton.addEventListener('click', resetStopWatch);
 lapButton.addEventListener('click', getlaps);
 
-//check the users current preferred theme and set it accordingly
 let selectedTheme;
 const currentPcTheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
 if(currentPcTheme === true){
     selectedTheme = "dark"
 }else{selectedTheme = "light"}
 // console.log(selectedTheme)
+
 document.documentElement.setAttribute("data-theme", selectedTheme);
 
-//toggle dark and light theme in the stop watch
 const toggleTheme = () => {
     if(!themeToggler) return;
 
