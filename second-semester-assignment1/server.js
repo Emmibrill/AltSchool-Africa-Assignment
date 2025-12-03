@@ -192,7 +192,6 @@ function updateItems(req, res){
                     return;
                 }
                 res.writeHead(200, {'Content-Type':'application/json'});
-                // res.write('Successfully updated items:\n\n');
                 res.end(JSON.stringify(updatedItems));
             })
         })
