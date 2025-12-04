@@ -1,1 +1,44 @@
-[{"id":1,"name":"Laptop","price":1000000,"size":"small"},{"id":2,"name":"Desktop","price":3000000,"size":"large"},{"id":3,"name":"Tablet","price":500000,"size":"medium"},{"id":4,"name":"Smartphone","price":800000,"size":"small"},{"id":5,"name":"Monitor","price":300000,"size":"medium"},{"id":6,"name":"Printer","price":4000000,"size":"large"},{"id":7,"name":"test","price":180000,"size":"small"}]
+[
+    {
+        "id":1,
+        "name":"Laptop",
+        "price":1000000,
+        "size": "small"
+    },
+    {
+        "id":2,
+        "name":"Desktop",
+        "price":3000000,
+        "size": "large"
+    },
+    {
+        "id":3,
+        "name":"Tablet",
+        "price":500000,
+        "size": "medium"
+    },
+    {
+        "id":4,
+        "name":"Smartphone",
+        "price":800000,
+        "size": "small"
+    },
+    {
+        "id":5,
+        "name":"Monitor",
+        "price":300000,
+        "size": "medium"
+    },
+    {
+        "id":6,
+        "name":"Printer",
+        "price":4000000,
+        "size": "large"
+    },
+    {
+        "id":7,
+        "name":"Router",
+        "price":30000,
+        "size": "small"
+    }
+]
