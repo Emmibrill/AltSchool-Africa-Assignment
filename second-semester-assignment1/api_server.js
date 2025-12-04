@@ -1,4 +1,4 @@
-const { readFile, writeFile } = require('./external_packages/file_system.js');
+const { openFile, writeToFile } = require('./external_packages/file_system.js');
 const fs = require('fs');
 const http = require('http');
 const path = require('path');
@@ -19,13 +19,35 @@ const server = http.createServer(requestHandler);
 //handle requests
 function requestHandler(req, res) {
 
+    const url = new URL(req.url, `http://${req.headers.host}`);
+    let route = `${req.method}:${url.pathname}`;
+    let id = null;
+
+    if(req.method === 'GET' && url.pathname.startsWith('/api/items/')){
+        //extract id from the url
+        id = Number(url.pathname.split('/')[3]);
+
+        //Validate id and route
+        if(isNaN(id) || url.pathname.split('/').length > 4){
+            res.writeHead(400, {'Content-Type':'application/json'});
+            res.end(JSON.stringify({
+                "status": "error",
+                "message": "Invalid id or route"
+            }));
+            return;
+        }
+        //set the id in request object and update route
+        req.params = {id};
+        route = 'GET:/api/items/:id';
+    }
+
     //handle different routes and methods
-    switch (`${req.method}:${req.url}`) {
-        case 'GET:/index.html':
-            getStudentPage(req, res);
-            break;
+    switch (route) {
         case 'GET:/api/items':
-            getAllItems(req, res)
+            getAllItems(req, res);
+            break;
+        case 'GET:/api/items/:id':
+            getItem(req, res);
             break;
         case 'POST:/api/items':
             addItem(req, res);
@@ -37,59 +59,55 @@ function requestHandler(req, res) {
             deleteItem(req, res);
             break;
         default:
-            const errorPagePath = path.resolve('404.html');
-            fs.readFile(errorPagePath, 'utf8', (err, data) => {
-                if (err) {
-                    console.error('Error reading 404 page', err);
-                    res.writeHead(500, {'Content-Type' : 'application/json'});
-                    res.end(JSON.stringify({
-                        "status" : "error",
-                        "message": "There was an error reading the 404 page"
-                    }));
-                    return;
-                }
-                res.writeHead ( 404, {'Content-Type' : 'text/html' })
-                res.end(data);
-            });
+            res.writeHead(404, {'Content-Type':'application/json'});
+            res.end(JSON.stringify({
+                "status" : "error",
+                "message": "page not found"
+            }));
             break;
     }
-}
-
-//Get student page
-async function getStudentPage(req, res){
-
-    try{
-        const studentPage = path.resolve('index.html');
-        const html = await readFile(studentPage)
-        res.writeHead(200, {'Content-Type' : 'text/html'});
-        res.end(html);
-    }
-    catch(err){
-        res.writeHead(500, {'Content-Type':'application/json'});
-        res.end(JSON.stringify({
-            "status": "error",
-            "message": "Error reading file:" + err.message
-        }))
-    }
-    
 }
 
 
 //Get/display all items
 async function getAllItems(req, res){
     try{
-        const items = await readFile(dbPath);
+        const items = await openFile(dbPath);
+        const parsedItems = JSON.parse(items);
         res.writeHead(200, {'Content-Type' : 'application/json'});
-        res.end(items);
+        res.end(JSON.stringify(parsedItems));
+        return; 
     }
     catch(err){
         res.writeHead(500, {'Content-Type' : 'application/json'});
         res.end(JSON.stringify({
             "status" : "error",
             "message": "Error reading file: " + err.message
-        }))
+        }));
+        return;
     }
     
+}
+async function getItem(req, res){
+    const id = req.params.id;
+    // console.log(id)
+    const items = await openFile(dbPath);
+    const parsedItems = JSON.parse(items)
+    const findItem = parsedItems.findIndex(item => item.id === id);
+    if(findItem === -1){
+        res.writeHead(404, {'Content-Type':'application/json'});
+        res.end(JSON.stringify({
+            "status": "error",
+            "message": `Item with id:${id} not found`
+        }));
+        return;
+    }
+    res.writeHead(200, {'Content-Type':'application/json'});
+    res.end(JSON.stringify(parsedItems[findItem]));
+    
+    console.log(parsedItems[findItem])
+   
+    // console.log(findItem);
 }
 
 //Add items to the list of items
@@ -110,7 +128,7 @@ function addItem(req, res){
 
         //Read and write the items file
         try{
-            const items = await readFile(dbPath)
+            const items = await openFile(dbPath)
             const oldItems = JSON.parse(items);
 
             //Dynamically assign id to new item
@@ -123,14 +141,15 @@ function addItem(req, res){
 
            //Write the new list of items back to the file
            try{
-            await writeFile(dbPath, newItemList, res, newItem)
+            await writeToFile(dbPath, newItemList, res, newItem)
            }
            catch(err){
             res.writeHead(500, {'Content-Type' : 'application/json'});
             res.end(JSON.stringify({
                 "status" : "error",
                 "message": "Error writing file: " + err.message
-            }))
+            }));
+            return;
            }
         }
         catch(err){
@@ -138,7 +157,8 @@ function addItem(req, res){
             res.end(JSON.stringify({
                 "status" : "error",
                 "message": "Error reading file: " + err.message
-            }))
+            }));
+            return;
         }
     });
 }
@@ -162,7 +182,7 @@ function updateItems(req, res){
 
         //Read the items file
        try{
-            const Items = await readFile(dbPath);
+            const Items = await openFile(dbPath);
             //find the item to be updated
             const oldItems = JSON.parse(Items);
             const itemIndex = oldItems.findIndex(item => item.id === itemId);
@@ -174,7 +194,8 @@ function updateItems(req, res){
                 res.end(JSON.stringify({
                     "status": "error",
                     "message": `Item with id:${itemId} not found`
-                }))
+                }));
+                return;
             }
 
             //update the item
@@ -184,14 +205,16 @@ function updateItems(req, res){
 
             //write the updated items back to the file
             try{
-                await writeFile(dbPath, oldItems, res, updatedItems)
+                await writeToFile(dbPath, oldItems, res, updatedItems);
+                return;
             }
             catch(err){
                 res.writeHead(500, {'Content-Type' : 'application/json'});
                 res.end(JSON.stringify({
                     "status" : "error",
                     "message": "Error writing file: " + err.message
-                }))
+                }));
+                return;
             }
         }
         catch(err){
@@ -199,7 +222,8 @@ function updateItems(req, res){
             res.end(JSON.stringify({
                 "status": "error",
                 "message": "Error reading file: " + err.message
-            }))
+            }));
+            return;
         }
 
     });
@@ -214,17 +238,17 @@ function deleteItem(req, res){
     
     //Handle the end of data collection
     req.on('end', async () => {
+
         //Convert buffer form users to usable data string
         const itemIdString = Buffer.concat(itemToDleteId).toString();
         const cleanedId = JSON.parse(itemIdString);
-        // console.log(cleanedId);
 
         //get the id of the item to be deleted
         const itemId = cleanedId.id
 
         //Read the items file
         try{
-            const items = await readFile(dbPath);
+            const items = await openFile(dbPath);
             const parsedItems = JSON.parse(items)
             // console.log(parsedItems)
 
@@ -246,7 +270,8 @@ function deleteItem(req, res){
 
             //write the updated items back to the file
             try{
-                writeFile(dbPath, parsedItems, res, updatedItems);
+                await writeToFile(dbPath, parsedItems, res, updatedItems);
+                return;
             }
             catch(err){
                 res.writeHead(500, {'Content-Type' : 'application/json'});
@@ -262,11 +287,11 @@ function deleteItem(req, res){
             res.end(JSON.stringify({
                 "status": "error",
                 "message": "Error reading file: " + err.message
-            }))
+            }));
+            return;
         }
     });
 }
-
 
 //listen to server with the port and host created
 server.listen(PORT, HOST_NAME, () => {

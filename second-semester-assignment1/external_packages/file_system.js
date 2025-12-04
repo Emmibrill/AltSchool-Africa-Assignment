@@ -1,20 +1,20 @@
 const fs = require('fs');
 
 //Read file
-function readFile(filePath){
+function openFile(filePath){
     return new Promise ((resolve, reject) => {
         fs.readFile(filePath, 'utf8', (err, data) => {
             if(err){
-                return reject(err)
+                return reject(err);
             }else{
-                resolve(data)
+                resolve(data);
             }
         });
     })
 }
 
 //Write file
-function writeFile(filePath, rawData, res, output){
+function writeToFile(filePath, rawData, res, output){
     return new Promise ((resolve, reject) => {
         const cleanedData = JSON.stringify(rawData)
         fs.writeFile(filePath, cleanedData, (err) => {
@@ -29,8 +29,8 @@ function writeFile(filePath, rawData, res, output){
     });
 }
 
-
+//Export functions
 module.exports = {
-    readFile,
-    writeFile
+    openFile,
+    writeToFile
 }

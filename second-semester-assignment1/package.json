@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js"
+    "web": "nodemon web_server.js",
+    "api": "nodemon api_server.js"
   },
   "author": "Emmanuel Udo (Emmibrill Udo)",
   "license": "ISC",
