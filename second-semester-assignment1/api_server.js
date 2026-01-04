@@ -2,8 +2,9 @@ const { openFile, writeToFile } = require('./external_packages/file_system.js');
 const fs = require('fs');
 const http = require('http');
 const path = require('path');
-const dbPath = path.resolve('inventory.json'); 
+const dbPath = path.resolve('inventory.json');
 console.log(dbPath);
+
 
 //create port number
 const PORT = 3000;
@@ -13,7 +14,6 @@ const HOST_NAME = 'localhost';
 
 //create server
 const server = http.createServer(requestHandler);
-
 
 
 //handle requests
@@ -86,8 +86,8 @@ async function getAllItems(req, res){
         }));
         return;
     }
-    
 }
+//Get a single item by id
 async function getItem(req, res){
     const id = req.params.id;
     // console.log(id)
@@ -104,9 +104,7 @@ async function getItem(req, res){
     }
     res.writeHead(200, {'Content-Type':'application/json'});
     res.end(JSON.stringify(parsedItems[findItem]));
-    
-    console.log(parsedItems[findItem])
-   
+    // console.log(parsedItems[findItem])
     // console.log(findItem);
 }
 
@@ -119,12 +117,10 @@ function addItem(req, res){
         itemToAdd.push(itemDataChunk);
     });
 
-    
     req.on('end', async () => {
         //convert items data from buffer to usable data string
         const item = Buffer.concat(itemToAdd).toString();
         const newItem = JSON.parse(item);
-        // console.log(newItem);
 
         //Read and write the items file
         try{
@@ -171,7 +167,6 @@ function updateItems(req, res){
         itemData.push(itemDataChunk)
     });
 
-    
     req.on('end', async () => {
         //Convert buffer form users to usable data string 
         const updateDataString = Buffer.concat(itemData).toString();

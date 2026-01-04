@@ -49,17 +49,17 @@ async function getStudentPage(req, res){
         const html = await openFile(studentPage)
         res.writeHead(200, {'Content-Type' : 'text/html'});
         res.end(html);
+        return;
     }
     catch(err){
         res.writeHead(500, {'Content-Type':'application/json'});
         res.end(JSON.stringify({
             "status": "error",
             "message": "Error reading file:" + err.message
-        }))
-    }
-    
+        }));
+        return;
+    }  
 }
-
 
 //listen to server with the port and host created
 server.listen(PORT, HOST_NAME, () => {
