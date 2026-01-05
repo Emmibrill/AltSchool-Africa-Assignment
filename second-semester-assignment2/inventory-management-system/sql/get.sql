@@ -13,8 +13,8 @@ INNER JOIN products p ON o.product_id = p.product_id;
 --- Retrieve all categories with the count of items in each category
 SELECT c.category_id AS category_id, c.name AS category_name, COUNT(p.product_id) AS product_count
 FROM categories c
-LEFT JOIN products p ON c.category_id = p.category_id
-GROUP BY c.category_id, c.name;
+LEFT JOIN products p ON c.category_id = p.category_id --- To include categories with zero products
+GROUP BY c.category_id, c.name; 
 
 --- Retrieve all users with their roles
 SELECT user_id, full_name, email, user_role
