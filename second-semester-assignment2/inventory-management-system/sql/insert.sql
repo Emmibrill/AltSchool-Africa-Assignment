@@ -20,8 +20,8 @@ VALUES
 ('Laptop Pro 15"', 1299.99, 'large', 1, 30),
 ('Ergonomic Office Chair', 199.99, 'large', 2, 20),
 ('Wooden Dining Table', 499.99, 'large', 2, 10),
-('Men\'s Casual Shirt', 29.99, 'medium', 3, 100),
-('Women\'s Formal Dress', 89.99, 'medium', 3, 80);
+('Men Casual Shirt', 29.99, 'medium', 3, 100),
+('Women Formal Dress', 89.99, 'medium', 3, 80);
 
 --- Inserting sample orders
 INSERT INTO orders (user_id, product_id, quantity, order_status, approved_at, approved_by)
