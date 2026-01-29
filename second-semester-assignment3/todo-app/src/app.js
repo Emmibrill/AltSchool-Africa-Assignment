@@ -14,6 +14,9 @@ const errorMiddleware = require("./middlewares/error.middleware");
 
 const app = express();
 const PORT = process.env.PORT
+const NODE_ENV = process.env.NODE_ENV
+const SESSION_SECRET = process.env.SESSION_SECRET;
+const MONGODB_CONECTION_STRING = process.env.MONGODB_CONECTION_STRING;
 
 
 // Set up view engine
@@ -27,10 +30,14 @@ app.use(express.json());
 // Session management
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: process.env.MONGODB_CONECTION_STRING})
+    store: MongoStore.create({ mongoUrl: MONGODB_CONECTION_STRING }),
+    cookie: {
+      secure: NODE_ENV === "production",
+      httpOnly: true,
+    },
   })
 );
 
