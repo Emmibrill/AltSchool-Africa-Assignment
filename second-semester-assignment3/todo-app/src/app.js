@@ -32,6 +32,7 @@ app.get("/", (req, res) => {
 // Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "../static")));
 
 // Session management
 app.use(
@@ -49,7 +50,7 @@ app.use(
 
 // Routes
 app.use("/", authRoutes);
-app.use("/todos", todoRoutes);
+app.use("/", todoRoutes);
 
 // Error handling middleware
 app.use(errorMiddleware);
@@ -58,7 +59,7 @@ app.use(errorMiddleware);
 const startServer = async () => {
   await connectToMongoDB();
 
-  app.listen(PORT, () => {
+  app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server is running on http://localhost:${PORT}`);
   });
 };

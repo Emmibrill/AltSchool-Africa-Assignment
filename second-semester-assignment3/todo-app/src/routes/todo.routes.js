@@ -9,3 +9,5 @@ router.post("/todos/:id/status", auth, todoController.updateStatus);
 
 module.exports = router;
 router.post("/todos/:id/delete", auth, todoController.deleteTodo);
+
+module.exports = router;

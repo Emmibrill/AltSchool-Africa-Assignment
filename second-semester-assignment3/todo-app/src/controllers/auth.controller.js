@@ -21,6 +21,51 @@ exports.getLogin = (req, res) => {
   }
 };
 
+exports.login = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    //Empty fields check
+    if (!username || !password) {
+      return res.render("login", {
+        error: "Username and password are required",
+      });
+    }
+
+    //Find user
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.render("login", {
+        error: "Invalid username or password",
+      });
+    }
+
+    //Compare password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.render("login", {
+        error: "Invalid username or password",
+      });
+    }
+
+    //Success
+    req.session.userId = user._id;
+    req.session.save((err) => {
+      if (err) {
+        logger.error("Failed to save session:", err);
+        return res.render("login", {
+          error: "Failed to log in. Please try again.",
+        });
+      }
+      logger.info(`User logged in: ${username}`);
+      res.redirect("/todos");
+    });
+  } catch (error) {
+      res.render("login", {
+        error: "Login failed. Try again.",
+      });
+    }
+};
 
 exports.register = async (req, res, next) => {
   try {
@@ -59,47 +104,9 @@ exports.register = async (req, res, next) => {
   }
 };
 
-exports.login = async (req, res) => {
-  try {
-    const { username, password } = req.body;
-
-    //Empty fields check
-    if (!username || !password) {
-      return res.render("login", {
-        error: "Username and password are required",
-      });
-    }
-
-    //Find user
-    const user = await User.findOne({ username });
-    if (!user) {
-      return res.render("login", {
-        error: "Invalid username or password",
-      });
-    }
-
-    //Compare password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.render("login", {
-        error: "Invalid username or password",
-      });
-    }
-
-    //Success
-    req.session.userId = user._id;
-    logger.info(`User logged in: ${username}`);
-    res.redirect("/todos");
-  } catch (error) {
-    res.render("login", {
-      error: "Login failed. Try again.",
-    });
-  }
-};
-
-
 exports.logout = (req, res) => {
-  req.session.destroy(() => {
+  req.session.destroy((err) => {
+    if (err) console.error(err);
     res.redirect("/login");
   });
 };

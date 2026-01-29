@@ -9,7 +9,7 @@ exports.getTodos = async (req, res, next) => {
     if (status) filter.status = status;
 
     const todos = await Todo.find(filter).sort({ createdAt: -1 });
-    res.render("dashboard", { todos, error: null });
+    res.render("dashboard", { todos, error: null, message: null });
   } catch (error) {
     res.render("dashboard", { 
       todos: [], 
@@ -42,13 +42,17 @@ exports.updateStatus = async (req, res, next) => {
     res.redirect("/todos");
   } catch (error) {
     next(error);
+    res.render("dashboard", { 
+      todos: [], 
+      message: null,
+      error: "Failed to update todo status. Try again." 
+    });
   }
 };
 exports.deleteTodo = async (req, res, next) => {
   try {
-    await Todo.findOneAndUpdate(
+    await Todo.findOneAndDelete(
       { _id: req.params.id, user: req.session.userId },
-      { status: "deleted" }
     );
     res.redirect("/todos");
   } catch (error) {
