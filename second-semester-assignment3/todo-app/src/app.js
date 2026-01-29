@@ -1,11 +1,11 @@
-const express = require("express");
 require("dotenv").config();
+const express = require("express");
 const path = require("path");
 
 const { connectToMongoDB } = require("./config/db");
 
 const session = require("express-session");
-const MongoStore = require("connect-mongo");
+const MongoStore = require("connect-mongo").default;
 
 
 const authRoutes = require("./routes/auth.routes");
@@ -16,7 +16,7 @@ const app = express();
 const PORT = process.env.PORT
 const NODE_ENV = process.env.NODE_ENV
 const SESSION_SECRET = process.env.SESSION_SECRET;
-const MONGODB_CONECTION_STRING = process.env.MONGODB_CONECTION_STRING;
+const MONGODB_CONNECTION_STRING = process.env.MONGODB_CONNECTION_STRING;
 
 
 // Set up view engine
@@ -33,7 +33,7 @@ app.use(
     secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: MONGODB_CONECTION_STRING }),
+    store: MongoStore.create({ mongoUrl: process.env.MONGODB_CONNECTION_STRING}),
     cookie: {
       secure: NODE_ENV === "production",
       httpOnly: true,
