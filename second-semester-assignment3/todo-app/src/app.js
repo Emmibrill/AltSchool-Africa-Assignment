@@ -25,7 +25,7 @@ app.set("views", path.join(__dirname, "views"));
 
 // Redirect root to login page
 app.get("/", (req, res) => {
-  res.redirect("/register"); // redirect root to login page
+  res.redirect("/login"); // redirect root to login page
 });
 
 
