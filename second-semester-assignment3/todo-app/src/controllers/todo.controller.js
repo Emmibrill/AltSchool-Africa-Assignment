@@ -9,9 +9,12 @@ exports.getTodos = async (req, res, next) => {
     if (status) filter.status = status;
 
     const todos = await Todo.find(filter).sort({ createdAt: -1 });
-    res.render("dashboard", { todos });
+    res.render("dashboard", { todos, error: null });
   } catch (error) {
-    next(error);
+    res.render("dashboard", { 
+      todos: [], 
+      error: "Failed to load todos. Try again." 
+    });
   }
 };
 

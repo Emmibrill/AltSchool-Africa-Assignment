@@ -3,12 +3,24 @@ const User = require("../models/user.model");
 const logger = require("../utils/logger");
 
 exports.getRegister = (req, res) => {
-  res.render("register");
+  try {
+    res.render("register", { error: null });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Something went wrong");
+  }
 };
 
+
 exports.getLogin = (req, res) => {
-  res.render("login");
+  try {
+    res.render("login", { error: null });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Something went wrong");
+  }
 };
+
 
 exports.register = async (req, res, next) => {
   try {

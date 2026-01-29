@@ -23,6 +23,12 @@ const MONGODB_CONNECTION_STRING = process.env.MONGODB_CONNECTION_STRING;
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+// Redirect root to login page
+app.get("/", (req, res) => {
+  res.redirect("/register"); // redirect root to login page
+});
+
+
 // Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
