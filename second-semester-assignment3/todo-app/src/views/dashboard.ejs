@@ -1,0 +1,23 @@
+<form method="POST" action="/todos">
+  <input name="title" placeholder="New todo" required />
+  <button>Add</button>
+</form>
+
+<ul>
+  <% todos.forEach(todo => { %>
+    <li>
+      <%= todo.title %> - <%= todo.status %>
+      <form method="POST" action="/todos/<%= todo._id %>/status">
+        <select name="status">
+          <option>pending</option>
+          <option>completed</option>
+          <option>deleted</option>
+        </select>
+        <button>Update</button>
+      </form>
+    </li>
+  <% }) %>
+</ul>
+<% if (error) { %>
+  <p style="color: red;"><%= error %></p>
+<% } %>
