@@ -321,9 +321,9 @@ select {
    responsive — Mobile full-screen App mode */
 
 @media (max-width: 768px) {
-  body {
+  /* body {
     height: 100svh;
-  }
+  } */
 
   .login-main,
   .register-main {
