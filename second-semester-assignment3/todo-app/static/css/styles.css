@@ -51,6 +51,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
+  background: black;
 }
 
 body {
@@ -321,9 +322,9 @@ select {
    responsive — Mobile full-screen App mode */
 
 @media (max-width: 768px) {
-  /* body {
+  body {
     height: 100svh;
-  } */
+  }
 
   .login-main,
   .register-main {
@@ -335,10 +336,11 @@ select {
   .card {
     width: 100%;
     max-width: none;
+    height: fit-content;
     padding: var(--space-lg);
     box-shadow: none;
-    /* background: transparent; */
-    
+    margin: auto;
+
     
   }
 
