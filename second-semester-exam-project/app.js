@@ -16,7 +16,7 @@ app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/blogs", require("./routes/blogRoutes"));
 
 
-// Health check route
+// API alive check route
 // app.get("/", (req, res) => {
 //   res.status(200).json({ message: "Welcome to emmibrill Blogging Platform API" });
 // });
