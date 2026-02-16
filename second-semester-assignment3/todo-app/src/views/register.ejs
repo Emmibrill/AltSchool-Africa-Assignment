@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo App | Create Account</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <main class="register-main">
+    <section class="card">
+      <header class="auth-header">
+        <h1>Create your Todo account</h1>
+        <p class="auth-subtitle">
+          A focused space to plan, track, and complete what matters.
+        </p>
+      </header>
+
+      <% if (error) { %>
+        <div class="error"><%= error %></div>
+      <% } %>
+
+      <form method="POST" action="/register">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" required />
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required />
+
+        <button type="submit">Create account</button>
+      </form>
+
+      <p class="auth-footer">
+        Already have an account?
+        <a href="/login">Sign in</a>
+      </p>
+    </section>
+  </main>
+</body>
+</html>
+
+
+  
+>

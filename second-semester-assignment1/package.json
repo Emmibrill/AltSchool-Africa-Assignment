@@ -1,0 +1,16 @@
+{
+  "name": "package_manager",
+  "version": "1.0.0",
+  "description": "AltSchool of Backend Engineering Karatu 2025 Second Semester NodeJS assingment 1 on servers and APIs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "web": "nodemon web_server.js",
+    "api": "nodemon api_server.js"
+  },
+  "author": "Emmanuel Udo (Emmibrill Udo)",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo App | Login</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <main class="login-main">
+    <section class="card">
+      <header class="auth-header">
+        <h1>Todo</h1>
+        <p class="auth-subtitle">
+          Organise your tasks. Stay focused. Finish strong.
+        </p>
+      </header>
+
+      <% if (error) { %>
+        <div class="error"><%= error %></div>
+      <% } %>
+
+      <form method="POST" action="/login">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" required />
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required />
+
+        <button type="submit">Sign in</button>
+      </form>
+
+      <p class="auth-footer">
+        New here?
+        <a href="/register">Create an account</a>
+      </p>
+    </section>
+  </main>
+</body>
+</html>
+
+
+  
