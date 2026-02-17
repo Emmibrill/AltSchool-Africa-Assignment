@@ -66,8 +66,7 @@ exports.getPublishedBlogs = async (req, res) => {
   }
 };
 
-//Get Single Blog + Increment read count
-
+//Get Single Blog plus Increment read count
 exports.getSingleBlog = async (req, res) => {
   try {
     const blog = await Blog.findOneAndUpdate(

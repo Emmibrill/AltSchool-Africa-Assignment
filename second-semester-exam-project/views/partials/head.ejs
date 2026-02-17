@@ -1,0 +1,64 @@
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title><%= title %></title>
+
+<style>
+  :root {
+    --primary-color: #0077cc;
+    --primary-dark: #005fa3;
+    --bg-color: #f6f8fb;
+    --text-color: #333;
+    --code-bg: #f4f6f8;
+    --card-bg: #ffffff;
+    --border-radius: 8px;
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+
+  * { 
+        box-sizing: border-box; 
+        margin: 0; padding: 0; 
+    }
+
+  body {
+    font-family: var(--font-family);
+    line-height: 1.6;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding: 2rem 1rem;
+  }
+
+  header, main, footer {
+    max-width: 980px;
+    margin: auto;
+  }
+
+  section {
+    margin-bottom: 2rem;
+    background: var(--card-bg);
+    padding: 1.8rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+  }
+
+  pre, code {
+    background-color: var(--code-bg);
+    padding: 0.35rem 0.55rem;
+    border-radius: var(--border-radius);
+    font-family: monospace;
+  }
+
+  pre {
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    padding: 1rem;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 2rem;
+    color: #555;
+  }
+</style>

@@ -2,11 +2,16 @@ require("dotenv").config();
 const express = require("express");
 const { connectToMongoDB } = require("./config/db");
 const errorHandler = require("./middleware/errorHandler");
+const path = require("path");
 
 const app = express();
 
 //define PORT
 const PORT = process.env.PORT;
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+//console.log("Views directory set to:", path.join(__dirname, "views"));
 
 // Middleware
 app.use(express.json());
@@ -21,240 +26,251 @@ app.use("/api/blogs", require("./routes/blogRoutes"));
 //   res.status(200).json({ message: "Welcome to emmibrill Blogging Platform API" });
 // });
 
+// app.get("/", (req, res) => {
+//   res.send(
+//     `
+//     <!DOCTYPE html>
+// <html lang="en">
+// <head>
+//   <meta charset="UTF-8">
+//   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+//   <title>Blog API – AltSchool Second Semester Exam</title>
+//   <style>
+//     :root {
+//       --primary-color: #0077cc;
+//       --bg-color: #f9f9fb;
+//       --text-color: #333;
+//       --code-bg: #f4f4f4;
+//       --border-radius: 6px;
+//       --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+//     }
+
+//     * { box-sizing: border-box; margin: 0; padding: 0; }
+//     body { font-family: var(--font-family); line-height: 1.6; background-color: var(--bg-color); color: var(--text-color); padding: 2rem; }
+//     h1, h2, h3, h4 { margin-bottom: 0.5rem; color: #222; }
+//     h1 { font-size: 2rem; margin-bottom: 1rem; }
+//     hr { border: 0; height: 1px; background: #ddd; margin: 2rem 0; }
+//     p { margin-bottom: 1rem; }
+//     ul { margin: 0 0 1rem 2rem; }
+//     pre, code { background-color: var(--code-bg); padding: 0.3rem 0.5rem; border-radius: var(--border-radius); font-family: monospace; }
+//     pre { overflow-x: auto; margin-bottom: 1rem; }
+//     blockquote { border-left: 4px solid #ccc; margin: 1rem 0; padding-left: 1rem; color: #555; }
+//     a { color: var(--primary-color); text-decoration: none; }
+//     a:hover { text-decoration: underline; }
+//     header, main, footer { max-width: 900px; margin: auto; }
+//     section { margin-bottom: 2rem; }
+//     article { margin-bottom: 1.5rem; }
+//   </style>
+// </head>
+// <body>
+//   <header>
+//     <h1>Blog API – AltSchool Second Semester Exam</h1>
+//     <p>A RESTful Blog API built with <strong>Node.js</strong>, <strong>Express</strong>, and <strong>MongoDB</strong>, implementing authentication with <strong>JWT</strong>, pagination, filtering, searching, ordering, and full CRUD functionality using <strong>MVC pattern</strong>.</p>
+//   </header>
+
+//   <main>
+//     <section>
+//       <h2>Features</h2>
+//       <ul>
+//         <li>User Signup & Login (JWT Authentication – expires in 1 hour)</li>
+//         <li>Blog creation (Draft by default)</li>
+//         <li>Publish blog</li>
+//         <li>Edit blog (Draft or Published)</li>
+//         <li>Delete blog</li>
+//         <li>Public access to published blogs</li>
+//         <li>Pagination (default: 20 per page)</li>
+//         <li>Filter by state</li>
+//         <li>Search by title and tags</li>
+//         <li>Order by read_count, reading_time, timestamp</li>
+//         <li>Read count auto-increments</li>
+//         <li>Reading time calculation (based on word count)</li>
+//         <li>Owner-specific blog listing</li>
+//         <li>Centralized error handling</li>
+//         <li>MVC architecture</li>
+//         <li>Unit tests with Jest & Supertest</li>
+//       </ul>
+//     </section>
+
+//     <section>
+//       <h2>Tech Stack</h2>
+//       <ul>
+//         <li>Node.js</li>
+//         <li>Express.js</li>
+//         <li>MongoDB</li>
+//         <li>Mongoose</li>
+//         <li>JSON Web Token (JWT)</li>
+//         <li>bcryptjs</li>
+//         <li>Jest</li>
+//         <li>Supertest</li>
+//       </ul>
+//     </section>
+
+//     <section>
+//       <h2>Environment Variables</h2>
+//       <pre><code>PORT=3000
+// MONGO_URI=either_mine_or_your_mongodb_connection_string
+// JWT_SECRET=either_mine_or_your_secret_key</code></pre>
+//     </section>
+
+//     <section>
+//       <h2>Running the Server</h2>
+//       <article>
+//         <h3>Development mode</h3>
+//         <pre><code>npm run dev</code></pre>
+//       </article>
+//       <article>
+//         <h3>Production mode</h3>
+//         <pre><code>npm start</code></pre>
+//       </article>
+//     </section>
+
+//     <section>
+//       <h2>Run Tests</h2>
+//       <pre><code>npm test</code></pre>
+//     </section>
+
+//     <section>
+//       <h2>Authentication</h2>
+//       <p>All protected routes require:</p>
+//       <pre><code>Authorization: Bearer &lt;your_token&gt;</code></pre>
+//       <blockquote>JWT <strong>expires</strong> after 1 hour.</blockquote>
+//     </section>
+
+//     <section>
+//       <h2>API Endpoints</h2>
+//       <p><strong>Base URL:</strong> <code>http://localhost:3000/api</code></p>
+
+//       <article>
+//         <h3>Auth Routes</h3>
+//         <h4>Signup</h4>
+//         <pre><code>POST /api/auth/signup
+// Body: { first_name, last_name, email, password }
+// Response: { token }</code></pre>
+
+//         <h4>Login</h4>
+//         <pre><code>POST /api/auth/login
+// Body: { email, password }
+// Response: { token }</code></pre>
+//       </article>
+
+//       <article>
+//         <h3>Blog Routes</h3>
+
+//         <h4>Create Blog (Authenticated)</h4>
+//         <pre><code>POST /api/blogs
+// Headers: Authorization: Bearer &lt;token&gt;
+// Body: { title, description, tags, body }
+// Response: Blog object (draft state)</code></pre>
+
+//         <h4>Publish Blog (Owner Only)</h4>
+//         <pre><code>PATCH /api/blogs/:id/publish
+// Headers: Authorization: Bearer &lt;token&gt;
+// Response: { state: "published" }</code></pre>
+
+//         <h4>Edit Blog (Owner Only)</h4>
+//         <pre><code>PUT /api/blogs/:id
+// Headers: Authorization: Bearer &lt;token&gt;
+// Body: { title, description, tags, body }
+// Response: Updated Blog object</code></pre>
+
+//         <h4>Delete Blog (Owner Only)</h4>
+//         <pre><code>DELETE /api/blogs/:id
+// Headers: Authorization: Bearer &lt;token&gt;</code></pre>
+
+//         <h4>Get Published Blogs (Public)</h4>
+//         <pre><code>GET /api/blogs
+// Query params: page, limit, search, state, sortBy, order
+// Response: Paginated blogs</code></pre>
+
+//         <h4>Get Single Blog</h4>
+//         <pre><code>GET /api/blogs/:id
+// Response: Blog object with author info, read_count incremented</code></pre>
+
+//         <h4>Get Owner Blogs</h4>
+//         <pre><code>GET /api/blogs/user
+// Headers: Authorization: Bearer &lt;token&gt;
+// Response: List of blogs created by user</code></pre>
+//       </article>
+//     </section>
+
+//     <section>
+//       <h2>Reading Time Algorithm</h2>
+//       <p>Average reading speed: 200 words per minute</p>
+//       <pre><code>Math.ceil(totalWords / 200)</code></pre>
+//       <p>Example: 450 words → 3 min read</p>
+//     </section>
+
+//     <section>
+//       <h2>Filtering, Searching & Ordering</h2>
+//       <pre><code>GET /api/blogs?state=published
+// GET /api/blogs?search=node
+// GET /api/blogs?sortBy=read_count&order=desc</code></pre>
+//     </section>
+
+//     <section>
+//       <h2>Authorization Rules</h2>
+//       <ul>
+//         <li>Create Blog: Requires Login</li>
+//         <li>Publish Blog: Requires Login / Must Be Owner</li>
+//         <li>Edit Blog: Requires Login / Must Be Owner</li>
+//         <li>Delete Blog: Requires Login / Must Be Owner</li>
+//         <li>Get Published Blogs: Does not require Login</li>
+//         <li>Get Single Blog: Does not require Login</li>
+//         <li>Get Owner Blogs: Requires Login / Must Be Owner</li>
+//       </ul>
+//     </section>
+
+//     <section>
+//       <h2>Error Handling</h2>
+//       <ul>
+//         <li>Validation errors</li>
+//         <li>Duplicate key errors</li>
+//         <li>Invalid JWT</li>
+//         <li>Expired JWT</li>
+//         <li>Unauthorized access</li>
+//         <li>Server errors</li>
+//       </ul>
+//       <pre><code>{
+//   "success": false,
+//   "message": "Token expired"
+// }</code></pre>
+//     </section>
+
+//     <section>
+//       <h2>Design Decisions</h2>
+//       <ul>
+//         <li>JWT expires in 1 hour for security</li>
+//         <li>Blog state ensures draft control before publishing</li>
+//         <li>Pagination middleware is reusable</li>
+//         <li>MVC pattern ensures separation of concerns</li>
+//         <li>read_count increments automatically</li>
+//         <li>Author information populated when fetching single blog</li>
+//       </ul>
+//     </section>
+//   </main>
+
+//   <footer>
+//     <hr>
+//     <p>Developed by Emmibrill AKA MkpoikanaAbasi for AltSchool Africa Backend Engineering Second Semester Examination</p>
+//   </footer>
+// </body>
+// </html>
+
+//     `
+//   );
+// });
 app.get("/", (req, res) => {
-  res.send(
-    `
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog API – AltSchool Second Semester Exam</title>
-  <style>
-    :root {
-      --primary-color: #0077cc;
-      --bg-color: #f9f9fb;
-      --text-color: #333;
-      --code-bg: #f4f4f4;
-      --border-radius: 6px;
-      --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: var(--font-family); line-height: 1.6; background-color: var(--bg-color); color: var(--text-color); padding: 2rem; }
-    h1, h2, h3, h4 { margin-bottom: 0.5rem; color: #222; }
-    h1 { font-size: 2rem; margin-bottom: 1rem; }
-    hr { border: 0; height: 1px; background: #ddd; margin: 2rem 0; }
-    p { margin-bottom: 1rem; }
-    ul { margin: 0 0 1rem 2rem; }
-    pre, code { background-color: var(--code-bg); padding: 0.3rem 0.5rem; border-radius: var(--border-radius); font-family: monospace; }
-    pre { overflow-x: auto; margin-bottom: 1rem; }
-    blockquote { border-left: 4px solid #ccc; margin: 1rem 0; padding-left: 1rem; color: #555; }
-    a { color: var(--primary-color); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    header, main, footer { max-width: 900px; margin: auto; }
-    section { margin-bottom: 2rem; }
-    article { margin-bottom: 1.5rem; }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>Blog API – AltSchool Second Semester Exam</h1>
-    <p>A RESTful Blog API built with <strong>Node.js</strong>, <strong>Express</strong>, and <strong>MongoDB</strong>, implementing authentication with <strong>JWT</strong>, pagination, filtering, searching, ordering, and full CRUD functionality using <strong>MVC pattern</strong>.</p>
-  </header>
-
-  <main>
-    <section>
-      <h2>Features</h2>
-      <ul>
-        <li>User Signup & Login (JWT Authentication – expires in 1 hour)</li>
-        <li>Blog creation (Draft by default)</li>
-        <li>Publish blog</li>
-        <li>Edit blog (Draft or Published)</li>
-        <li>Delete blog</li>
-        <li>Public access to published blogs</li>
-        <li>Pagination (default: 20 per page)</li>
-        <li>Filter by state</li>
-        <li>Search by title and tags</li>
-        <li>Order by read_count, reading_time, timestamp</li>
-        <li>Read count auto-increments</li>
-        <li>Reading time calculation (based on word count)</li>
-        <li>Owner-specific blog listing</li>
-        <li>Centralized error handling</li>
-        <li>MVC architecture</li>
-        <li>Unit tests with Jest & Supertest</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>Tech Stack</h2>
-      <ul>
-        <li>Node.js</li>
-        <li>Express.js</li>
-        <li>MongoDB</li>
-        <li>Mongoose</li>
-        <li>JSON Web Token (JWT)</li>
-        <li>bcryptjs</li>
-        <li>Jest</li>
-        <li>Supertest</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>Environment Variables</h2>
-      <pre><code>PORT=3000
-MONGO_URI=either_mine_or_your_mongodb_connection_string
-JWT_SECRET=either_mine_or_your_secret_key</code></pre>
-    </section>
-
-    <section>
-      <h2>Running the Server</h2>
-      <article>
-        <h3>Development mode</h3>
-        <pre><code>npm run dev</code></pre>
-      </article>
-      <article>
-        <h3>Production mode</h3>
-        <pre><code>npm start</code></pre>
-      </article>
-    </section>
-
-    <section>
-      <h2>Run Tests</h2>
-      <pre><code>npm test</code></pre>
-    </section>
-
-    <section>
-      <h2>Authentication</h2>
-      <p>All protected routes require:</p>
-      <pre><code>Authorization: Bearer &lt;your_token&gt;</code></pre>
-      <blockquote>JWT <strong>expires</strong> after 1 hour.</blockquote>
-    </section>
-
-    <section>
-      <h2>API Endpoints</h2>
-      <p><strong>Base URL:</strong> <code>http://localhost:3000/api</code></p>
-
-      <article>
-        <h3>Auth Routes</h3>
-        <h4>Signup</h4>
-        <pre><code>POST /api/auth/signup
-Body: { first_name, last_name, email, password }
-Response: { token }</code></pre>
-
-        <h4>Login</h4>
-        <pre><code>POST /api/auth/login
-Body: { email, password }
-Response: { token }</code></pre>
-      </article>
-
-      <article>
-        <h3>Blog Routes</h3>
-
-        <h4>Create Blog (Authenticated)</h4>
-        <pre><code>POST /api/blogs
-Headers: Authorization: Bearer &lt;token&gt;
-Body: { title, description, tags, body }
-Response: Blog object (draft state)</code></pre>
-
-        <h4>Publish Blog (Owner Only)</h4>
-        <pre><code>PATCH /api/blogs/:id/publish
-Headers: Authorization: Bearer &lt;token&gt;
-Response: { state: "published" }</code></pre>
-
-        <h4>Edit Blog (Owner Only)</h4>
-        <pre><code>PUT /api/blogs/:id
-Headers: Authorization: Bearer &lt;token&gt;
-Body: { title, description, tags, body }
-Response: Updated Blog object</code></pre>
-
-        <h4>Delete Blog (Owner Only)</h4>
-        <pre><code>DELETE /api/blogs/:id
-Headers: Authorization: Bearer &lt;token&gt;</code></pre>
-
-        <h4>Get Published Blogs (Public)</h4>
-        <pre><code>GET /api/blogs
-Query params: page, limit, search, state, sortBy, order
-Response: Paginated blogs</code></pre>
-
-        <h4>Get Single Blog</h4>
-        <pre><code>GET /api/blogs/:id
-Response: Blog object with author info, read_count incremented</code></pre>
-
-        <h4>Get Owner Blogs</h4>
-        <pre><code>GET /api/blogs/user
-Headers: Authorization: Bearer &lt;token&gt;
-Response: List of blogs created by user</code></pre>
-      </article>
-    </section>
-
-    <section>
-      <h2>Reading Time Algorithm</h2>
-      <p>Average reading speed: 200 words per minute</p>
-      <pre><code>Math.ceil(totalWords / 200)</code></pre>
-      <p>Example: 450 words → 3 min read</p>
-    </section>
-
-    <section>
-      <h2>Filtering, Searching & Ordering</h2>
-      <pre><code>GET /api/blogs?state=published
-GET /api/blogs?search=node
-GET /api/blogs?sortBy=read_count&order=desc</code></pre>
-    </section>
-
-    <section>
-      <h2>Authorization Rules</h2>
-      <ul>
-        <li>Create Blog: Requires Login</li>
-        <li>Publish Blog: Requires Login / Must Be Owner</li>
-        <li>Edit Blog: Requires Login / Must Be Owner</li>
-        <li>Delete Blog: Requires Login / Must Be Owner</li>
-        <li>Get Published Blogs: Does not require Login</li>
-        <li>Get Single Blog: Does not require Login</li>
-        <li>Get Owner Blogs: Requires Login / Must Be Owner</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>Error Handling</h2>
-      <ul>
-        <li>Validation errors</li>
-        <li>Duplicate key errors</li>
-        <li>Invalid JWT</li>
-        <li>Expired JWT</li>
-        <li>Unauthorized access</li>
-        <li>Server errors</li>
-      </ul>
-      <pre><code>{
-  "success": false,
-  "message": "Token expired"
-}</code></pre>
-    </section>
-
-    <section>
-      <h2>Design Decisions</h2>
-      <ul>
-        <li>JWT expires in 1 hour for security</li>
-        <li>Blog state ensures draft control before publishing</li>
-        <li>Pagination middleware is reusable</li>
-        <li>MVC pattern ensures separation of concerns</li>
-        <li>read_count increments automatically</li>
-        <li>Author information populated when fetching single blog</li>
-      </ul>
-    </section>
-  </main>
-
-  <footer>
-    <hr>
-    <p>Developed by Emmibrill AKA MkpoikanaAbasi for AltSchool Africa Backend Engineering Second Semester Examination</p>
-  </footer>
-</body>
-</html>
-
-    `
-  );
+  try {
+    res.render("index", {
+     title: "Blogging API-AltSchool Backend[Nodejs] Second Semester Exam" 
+    });
+    res.status(200);
+    return;
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+  
 });
-
 
 // Global error handler
 app.use(errorHandler);
