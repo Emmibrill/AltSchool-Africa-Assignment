@@ -1,5 +1,19 @@
 const sessions = require('../data/sessionStore');
 
+// Import game duration from environment variables
+const { GAME_DURATION } = require('../config/env');
+
+
+const getSession = (sessionId) => {
+  const session = sessions.get(sessionId);
+
+  if (!session) {
+    throw new Error('Session not found');
+  }
+
+  return session;
+};
+
 
 // CREATE SESSION
 const createSession = (socketId, username, sessionId) => {
@@ -30,34 +44,20 @@ const createSession = (socketId, username, sessionId) => {
 
 
 // JOIN SESSION
-const joinSession = (
-  sessionId,
-  socketId,
-  username
-) => {
+const joinSession = (sessionId, socketId, username) => {
 
-  const session = sessions.get(sessionId);
-
-  if (!session) {
-    throw new Error('Session not found');
-  }
+  const session = getSession(sessionId);
 
   if (session.gameActive) {
-    throw new Error(
-      'Game already in progress'
-    );
+    throw new Error('Game already in progress');
   }
 
-  const existingPlayer =
-    session.players.find(
-      player =>
-        player.username === username
-    );
+  const existingPlayer = session.players.find(
+    player => player.username === username
+  );
 
   if (existingPlayer) {
-    throw new Error(
-      'Username already exists'
-    );
+    throw new Error('Username already exists');
   }
 
   const player = {
@@ -75,29 +75,17 @@ const joinSession = (
 
 
 // SUBMIT QUESTION
-const submitQuestion = (
-  sessionId,
-  socketId,
-  question,
-  answer
-) => {
+const submitQuestion = (sessionId, socketId, question, answer) => {
 
-  const session = sessions.get(sessionId);
-
-  if (!session) {
-    throw new Error('Session not found');
-  }
+  const session = getSession(sessionId);
 
   if (session.gameMaster !== socketId) {
-    throw new Error(
-      'Only game master can submit question'
-    );
+    throw new Error('Only game master can submit question');
   }
 
   session.question = question;
 
-  session.answer =
-    answer.toLowerCase().trim();
+  session.answer = answer.toLowerCase().trim();
 
   return session;
 };
@@ -106,44 +94,34 @@ const submitQuestion = (
 // START GAME
 const startGame = (sessionId, socketId, io) => {
 
-  const session = sessions.get(sessionId);
-
-  if (!session) {
-    throw new Error('Session not found');
-  }
+  const session = getSession(sessionId);
 
   if (session.gameMaster !== socketId) {
-    throw new Error(
-      'Only game master can start game'
-    );
+    throw new Error('Only game master can start game');
   }
 
   if (session.players.length < 3) {
-    throw new Error(
-      'Minimum 3 players required'
-    );
+    throw new Error('Minimum 3 players required');
   }
 
   if (!session.question || !session.answer) {
-    throw new Error(
-      'Question and answer required'
-    );
+    throw new Error('Question and answer required');
+  }
+
+  if (session.gameActive && !session.winner) {
+    throw new Error('Game already running');
   }
 
   session.gameActive = true;
-
   session.winner = null;
 
   session.players.forEach(player => {
     player.attemptsLeft = 3;
   });
 
-  io.to(sessionId).emit(
-    'game-started',
-    {
-      question: session.question
-    }
-  );
+  io.to(sessionId).emit('game-started', {
+    question: session.question
+  });
 
   session.timer = setTimeout(() => {
 
@@ -151,39 +129,34 @@ const startGame = (sessionId, socketId, io) => {
 
       session.gameActive = false;
 
-      io.to(sessionId).emit(
-        'timer-ended',
-        {
-          answer: session.answer,
-          message: 'Time Up! No winner.'
-        }
-      );
+      io.to(sessionId).emit('timer-ended', {
+        answer: session.answer,
+        message: 'Time Up! No winner.',
+        scores: session.players.map(p => ({
+          username: p.username,
+          score: p.score
+        })),
+        playerCount: session.players.length
+      });
     }
 
-  }, Number(process.env.GAME_DURATION));
+  }, GAME_DURATION);
 
   return session;
 };
 
 
 // GUESS ANSWER
-const guessAnswer = (
-  sessionId,
-  socketId,
-  guess,
-  io
-) => {
+const guessAnswer = (sessionId, socketId, guess, io) => {
 
-  const session = sessions.get(sessionId);
-
-  if (!session) {
-    throw new Error('Session not found');
-  }
+  const session = getSession(sessionId);
 
   if (!session.gameActive) {
-    throw new Error(
-      'Game not active'
-    );
+    throw new Error('Game not active');
+  }
+
+  if (session.winner) {
+    throw new Error('Game already ended');
   }
 
   const player = session.players.find(
@@ -195,34 +168,29 @@ const guessAnswer = (
   }
 
   if (player.attemptsLeft <= 0) {
-    throw new Error(
-      'No attempts left'
-    );
+    throw new Error('No attempts left');
   }
 
   player.attemptsLeft--;
 
-  if (
-    guess.toLowerCase().trim() ===
-    session.answer
-  ) {
+  if (guess.toLowerCase().trim() === session.answer) {
 
     session.winner = player.username;
-
     session.gameActive = false;
 
     player.score += 10;
 
     clearTimeout(session.timer);
 
-    io.to(sessionId).emit(
-      'player-won',
-      {
-        winner: player.username,
-        answer: session.answer,
-        scores: session.players
-      }
-    );
+    io.to(sessionId).emit('player-won', {
+      winner: player.username,
+      answer: session.answer,
+      scores: session.players.map(p => ({
+        username: p.username,
+        score: p.score
+      })),
+      playerCount: session.players.length
+    });
 
     rotateGameMaster(session);
 
@@ -239,38 +207,26 @@ const guessAnswer = (
 // ROTATE GAME MASTER
 const rotateGameMaster = (session) => {
 
-  if (session.players.length === 0) {
-    return;
-  }
+  if (session.players.length < 2) return;
 
   session.players.forEach(player => {
     player.isGameMaster = false;
   });
 
-  const currentIndex =
-    session.players.findIndex(
-      player =>
-        player.socketId ===
-        session.gameMaster
-    );
+  const currentIndex = session.players.findIndex(
+    player => player.socketId === session.gameMaster
+  );
 
-  const nextIndex =
-    (currentIndex + 1) %
-    session.players.length;
+  const nextIndex = (currentIndex + 1) % session.players.length;
 
-  session.players[nextIndex]
-    .isGameMaster = true;
+  session.players[nextIndex].isGameMaster = true;
 
-  session.gameMaster =
-    session.players[nextIndex].socketId;
+  session.gameMaster = session.players[nextIndex].socketId;
 };
 
 
-// LEAVE SESSION
-const leaveSession = (
-  sessionId,
-  socketId
-) => {
+// LEAVE SESSION (FIXED - NO MORE DELETION)
+const leaveSession = (sessionId, socketId) => {
 
   const session = sessions.get(sessionId);
 
@@ -278,19 +234,21 @@ const leaveSession = (
     return null;
   }
 
-  session.players =
-    session.players.filter(
-      player =>
-        player.socketId !== socketId
-    );
+  session.players = session.players.filter(
+    player => player.socketId !== socketId
+  );
 
   if (session.players.length === 0) {
 
     clearTimeout(session.timer);
 
-    sessions.delete(sessionId);
+    session.gameActive = false;
+    session.winner = null;
+    session.question = '';
+    session.answer = '';
 
-    return null;
+    // IMPORTANT: DO NOT DELETE SESSION ANYMORE
+    return session;
   }
 
   return session;
