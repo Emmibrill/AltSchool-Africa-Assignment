@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guessing Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   <div class="container">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+      <div class="sidebar-header">
+
+        <h2>Players</h2>
+
+        <!-- QUIT BUTTON -->
+        <button id="leave-btn" title="Leave Session">
+          leave
+        </button>
+
+      </div>
+
+      <div id="player-count">
+        Players: 0
+      </div>
+
+      <ul id="players-list"></ul>
+
+      <h2>Scores</h2>
+
+      <ul id="scores-list"></ul>
+
+    </div>
+
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+
+      <h1>Real-Time Guessing Game</h1>
+
+
+      <!-- CREATE & JOIN SECTION -->
+      <div class="top-controls">
+
+        <!-- CREATE SESSION -->
+        <div class="create-session-box">
+
+          <h2>Create Session</h2>
+
+          <input
+            type="text"
+            id="create-username"
+            placeholder="Enter Username"
+          />
+
+          <button id="create-btn">
+            Create Session
+          </button>
+
+        </div>
+
+
+        <!-- JOIN SESSION -->
+        <div class="join-session-box">
+
+          <h2>Join Session</h2>
+
+          <input
+            type="text"
+            id="join-username"
+            placeholder="Enter Username"
+          />
+
+          <input
+            type="text"
+            id="session-id"
+            placeholder="Enter Session ID"
+          />
+
+          <button id="join-btn">
+            Join Session
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- SESSION INFO -->
+      <div class="session-info">
+
+        <div id="session-display">
+
+          <h3>
+            Session ID:
+            <span id="current-session">
+              None
+            </span>
+          </h3>
+
+        </div>
+
+        <p>
+          Attempts Left:
+          <span id="attempts">
+            3
+          </span>
+        </p>
+
+      </div>
+
+
+      <!-- QUESTION -->
+      <div class="question-section">
+
+        <h2>Question</h2>
+
+        <div id="question-box">
+          Waiting for game...
+        </div>
+
+      </div>
+
+
+      <!-- GAME MASTER CONTROLS -->
+      <div class="master-controls hidden" id="master-controls">
+
+        <input
+          type="text"
+          id="question-input"
+          placeholder="Enter Question"
+        />
+
+        <input
+          type="text"
+          id="answer-input"
+          placeholder="Enter Answer"
+        />
+
+        <button id="submit-question-btn">
+          Submit Question
+        </button>
+
+        <button id="start-game-btn">
+          Start Game
+        </button>
+
+      </div>
+
+
+      <!-- GUESS SECTION -->
+      <div class="guess-section">
+
+        <input
+          type="text"
+          id="guess-input"
+          placeholder="Enter Guess"
+        />
+
+        <button id="guess-btn">
+          Submit Guess
+        </button>
+
+      </div>
+
+
+      <!-- CHAT FEED -->
+      <div class="chat-section">
+
+        <h2>Game Feed</h2>
+
+        <div id="messages"></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+
+  <script src="client.js"></script>
+
+</body>
+</html>
