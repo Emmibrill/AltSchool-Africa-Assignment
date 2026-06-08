@@ -7,9 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/**
- * ENUMS
- */
 
 enum UserRole {
   CREATOR
@@ -35,9 +32,6 @@ enum TicketStatus {
   CANCELLED
 }
 
-/**
- * USER
- */
 
 model User {
   id       String   @id @default(uuid())
@@ -56,9 +50,6 @@ model User {
   notifications Notification[]
 }
 
-/**
- * EVENT
- */
 
 model Event {
   id          String  @id @default(uuid())
@@ -88,9 +79,7 @@ model Event {
   @@index([creatorId])
 }
 
-/**
- * TICKET
- */
+
 
 model Ticket {
   id       String       @id @default(uuid())
@@ -115,9 +104,6 @@ model Ticket {
   @@index([userId])
 }
 
-/**
- * PAYMENT
- */
 
 model Payment {
   id        String        @id @default(uuid())
@@ -136,9 +122,6 @@ model Payment {
   createdAt DateTime @default(now())
 }
 
-/**
- * QR CODE
- */
 
 model QRCode {
   id       String @id @default(uuid())
@@ -151,14 +134,11 @@ model QRCode {
   createdAt DateTime @default(now())
 }
 
-/**
- * ATTENDANCE
- */
 
 model Attendance {
   id String @id @default(uuid())
 
-  ticketId String
+  ticketId String @unique
   ticket   Ticket @relation(fields: [ticketId], references: [id])
 
   eventId String
@@ -170,9 +150,7 @@ model Attendance {
   @@index([userId])
 }
 
-/**
- * REMINDER
- */
+
 
 model Reminder {
   id      String   @id @default(uuid())
@@ -186,9 +164,6 @@ model Reminder {
   createdAt DateTime @default(now())
 }
 
-/**
- * NOTIFICATION
- */
 
 model Notification {
   id      String  @id @default(uuid())
@@ -202,9 +177,6 @@ model Notification {
   createdAt DateTime @default(now())
 }
 
-/**
- * AUDIT LOG
- */
 
 model AuditLog {
   id       String  @id @default(uuid())

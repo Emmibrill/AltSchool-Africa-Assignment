@@ -13,6 +13,7 @@ router.post(
 
 router.get("/", EventController.getAll);
 router.get("/:id", EventController.getOne);
+router.get("/:id/share", EventController.shareLinks);
 
 router.put(
   "/:id",
