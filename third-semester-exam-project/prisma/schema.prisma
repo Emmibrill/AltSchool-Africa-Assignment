@@ -7,7 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 enum UserRole {
   CREATOR
   EVENTEE
@@ -32,7 +31,6 @@ enum TicketStatus {
   CANCELLED
 }
 
-
 model User {
   id       String   @id @default(uuid())
   name     String
@@ -48,8 +46,8 @@ model User {
   payments      Payment[]
   reminders     Reminder[]
   notifications Notification[]
+  attendances   Attendance[]
 }
-
 
 model Event {
   id          String  @id @default(uuid())
@@ -69,8 +67,9 @@ model Event {
   creatorId String
   creator   User   @relation(fields: [creatorId], references: [id])
 
-  tickets  Ticket[]
-  payments Payment[]
+  tickets    Ticket[]
+  payments   Payment[]
+  attendance Attendance[] // FIXED
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -78,8 +77,6 @@ model Event {
   @@index([status])
   @@index([creatorId])
 }
-
-
 
 model Ticket {
   id       String       @id @default(uuid())
@@ -92,18 +89,18 @@ model Ticket {
   userId String
   user   User   @relation(fields: [userId], references: [id])
 
-  paymentId String?
+  paymentId String?  @unique
   payment   Payment? @relation(fields: [paymentId], references: [id])
 
   qrCode QRCode?
 
-  createdAt   DateTime     @default(now())
+  createdAt DateTime @default(now())
+
   attendances Attendance[]
 
   @@index([eventId])
   @@index([userId])
 }
-
 
 model Payment {
   id        String        @id @default(uuid())
@@ -117,11 +114,11 @@ model Payment {
   eventId String
   event   Event  @relation(fields: [eventId], references: [id])
 
-  tickets Ticket[]
+  // FIX: Only ONE side owns relation (Ticket owns it)
+  ticket Ticket?
 
   createdAt DateTime @default(now())
 }
-
 
 model QRCode {
   id       String @id @default(uuid())
@@ -134,7 +131,6 @@ model QRCode {
   createdAt DateTime @default(now())
 }
 
-
 model Attendance {
   id String @id @default(uuid())
 
@@ -142,15 +138,16 @@ model Attendance {
   ticket   Ticket @relation(fields: [ticketId], references: [id])
 
   eventId String
-  userId  String
+  event   Event  @relation(fields: [eventId], references: [id])
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 
   checkedInAt DateTime @default(now())
 
   @@index([eventId])
   @@index([userId])
 }
-
-
 
 model Reminder {
   id      String   @id @default(uuid())
@@ -164,7 +161,6 @@ model Reminder {
   createdAt DateTime @default(now())
 }
 
-
 model Notification {
   id      String  @id @default(uuid())
   title   String
@@ -176,7 +172,6 @@ model Notification {
 
   createdAt DateTime @default(now())
 }
-
 
 model AuditLog {
   id       String  @id @default(uuid())
