@@ -2,10 +2,11 @@ import cron from "node-cron";
 import { prisma } from "../config/prisma";
 import { NotificationService } from "../notifications/notification.service";
 
-// runs every minute (for demo; production usually every 5-10 min)
+
 cron.schedule("* * * * *", async () => {
 
-  const now = new Date();
+    try {
+         const now = new Date();
 
   const reminders = await prisma.reminder.findMany({
     where: {
@@ -33,4 +34,6 @@ cron.schedule("* * * * *", async () => {
   }
 
   console.log("Reminder job executed:", reminders.length);
+    } catch (error) { console.log("Reminder cron job failed", error)  }
+ 
 });
