@@ -7,6 +7,10 @@ import ticketRoutes from "./tickets/ticket.routes";
 import paymentRoutes from "./payments/payment.routes";
 import qrRoutes from "./qr/qr.routes";
 import attendanceRoutes from "./attendance/attendance.routes";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./config/swagger";
+
+
 
 
 
@@ -22,6 +26,7 @@ app.use("/api/attendance", attendanceRoutes);
 app.use(express.json());
 app.use(cors());
 app.use(helmet());
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get("/", (req, res) => {
   res.send("Eventful API Running");
