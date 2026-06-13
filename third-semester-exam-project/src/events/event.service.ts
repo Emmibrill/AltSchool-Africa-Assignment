@@ -81,6 +81,39 @@ export class EventService {
     return event;
   }
 
+  static async getCreatorEvents(userId: string) {
+    return prisma.event.findMany({
+      where: {
+      creatorId: userId,
+    },
+    include: {
+      tickets: true,
+      payments: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  }
+
+  static async getEventAttendees(
+    eventId: string,
+    creatorId: string) {
+      const event = await prisma.event.findUnique({
+        where: {id: eventId,},
+      });
+      
+      if (!event) {throw new Error("Event not found");}
+      if (event.creatorId !== creatorId) {throw new Error("Unauthorized");}
+      return prisma.ticket.findMany({where:{eventId,},
+        include: {user: {
+          select: {id: true, name: true, email: true,},
+        },
+        qrCode: true,
+      },
+    });
+  }
+
   static async updateEvent(id: string, data: any, userId: string) {
 
     const event = await prisma.event.findUnique({

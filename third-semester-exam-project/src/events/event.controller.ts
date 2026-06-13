@@ -39,6 +39,33 @@ export class EventController {
     }
   }
 
+  static async myEvents(
+    req: AuthRequest,
+    res: Response) {
+    try {
+      const events = await EventService.getCreatorEvents(
+      req.user.id
+    );
+    
+    res.json(events);
+    } catch (err: any) {
+      res.status(400).json({
+      message: err.message,
+    });
+  }
+  }
+
+  static async attendees(req: Request<IdParam> & AuthRequest,res: Response) {
+    try {
+      const attendees = await EventService.getEventAttendees(
+        req.params.id,
+        req.user.id
+      );
+      res.json(attendees);
+    } catch (err: any) { res.status(400).json({message: err.message,});
+    }
+  }
+
   static async update(
     req: Request<IdParam> & AuthRequest,
     res: Response
@@ -82,7 +109,7 @@ export class EventController {
     }
   }
 
-  // ✅ FIXED SHARE LINKS (THIS IS THE REAL FIX)
+
   static async shareLinks(
     req: Request<IdParam>,
     res: Response

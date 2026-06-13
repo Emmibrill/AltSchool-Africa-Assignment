@@ -27,6 +27,8 @@ router.post(
   
 );
 
+router.get("/creator", authenticate, authorizeRole(["CREATOR"]), PaymentController.creatorPayments);
+
 
 router.get(
   "/verify/:reference",

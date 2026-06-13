@@ -12,7 +12,9 @@ router.post(
 );
 
 router.get("/", EventController.getAll);
+router.get("/my-events", authenticate, authorizeRole(["CREATOR"]), EventController.myEvents);
 router.get("/:id", EventController.getOne);
+router.get("/:id/attendees",authenticate,authorizeRole(["CREATOR"]),EventController.attendees);
 router.get("/:id/share", EventController.shareLinks);
 
 router.put(

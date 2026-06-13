@@ -5,6 +5,7 @@ import { AuthRequest } from "../middlewares/auth.middleware";
 import { prisma } from "../config/prisma";
 import { TicketService } from "../tickets/ticket.service";
 import { QRService } from "../qr/qr.service";
+import { CreatorPaymentService } from "./payment.creator.service";
 
 export class PaymentController {
 
@@ -95,4 +96,12 @@ export class PaymentController {
       return res.status(500).json({ message: "Webhook failed" });
     }
   }
+
+  static async creatorPayments(req: AuthRequest, res: Response) {
+    try {
+      const payments = await CreatorPaymentService.getCreatorPayments(req.user.id);
+      res.json(payments);
+    } catch (err: any) {res.status(400).json({message: err.message,});
+  }
+}
 }
