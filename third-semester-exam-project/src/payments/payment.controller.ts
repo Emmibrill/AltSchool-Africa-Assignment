@@ -101,7 +101,20 @@ export class PaymentController {
     try {
       const payments = await CreatorPaymentService.getCreatorPayments(req.user.id);
       res.json(payments);
-    } catch (err: any) {res.status(400).json({message: err.message,});
+    } catch (err: any) {res.status(400).json({message: err.message,});}
+  }
+
+  static async eventPayments(req: AuthRequest, res: Response) {
+    try { const payments = await CreatorPaymentService.getEventPayments(String(req.params.eventId),
+      req.user.id);
+    
+      res.json(payments);
+    } catch (err: any) {
+    res.status(400).json({
+      message: err.message,
+    });
   }
 }
+
+
 }

@@ -38,6 +38,12 @@ router.get(
   PaymentController.verify
 );
 
+router.get(
+  "/event/:eventId",
+  authenticate,
+  authorizeRole(["CREATOR"]),
+  PaymentController.eventPayments
+);
 
 
 router.post(
