@@ -4,9 +4,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn src/server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js",
-    "postinstall": "prisma generate"
+    "build": "tsc and prisma generate",
+    "start": "node dist/server.js"
   },
   "keywords": [],
   "author": "",
